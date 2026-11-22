@@ -38,3 +38,6 @@
 .memory-tag-input:focus{border-color:rgba(190,202,222,.4)}
 .tag-hint{font-size:9px;color:#747e8b;line-height:1.4}
 @media(max-width:650px){.pinned-memories{padding:14px 12px}.pin-button{right:88px}}
+
+/* Firebase account settings */
+.account-panel{padding:22px;border:1px solid rgba(195,207,228,.14);background:linear-gradient(145deg,rgba(27,34,46,.6),rgba(13,17,24,.65));border-radius:4px}.account-panel>svg{color:#b5c0d2}.account-panel .account-name{color:#e2e6ed;font-size:13px}.account-action{width:max-content;margin-top:6px}.account-message{padding-top:5px;color:#9eafc4;font-size:10px;line-height:1.5}
