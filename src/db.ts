@@ -1,6 +1,6 @@
 export type EntryKind = 'memory' | 'reflection' | 'experience'
 export type Privacy = 'private' | 'ai-readable' | 'shareable'
-export interface Entry { id:string; kind:EntryKind; title:string; body:string; createdAt:string; privacy:Privacy; collectionId?:string }
+export interface Entry { id:string; kind:EntryKind; title:string; body:string; createdAt:string; privacy:Privacy; collectionId?:string; pinned?:boolean; tags?:string[] }
 export interface Collection { id:string; name:string; description:string; createdAt:string }
 
 const DB_NAME='solace-local'

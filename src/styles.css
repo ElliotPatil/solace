@@ -21,3 +21,20 @@
 .memory-empty p{font-family:'Instrument Serif',serif;font-size:23px;color:#e5e6e8;margin:0}
 .memory-empty>span:not(.empty-star){font-size:11px;line-height:1.6;color:#8992a0}
 .memory-empty .hero-cta{margin-top:8px}
+
+
+/* Memory pins and tags */
+.pinned-memories{padding:17px 18px 20px;margin:0 0 28px;border:1px solid rgba(195,207,228,.14);background:linear-gradient(145deg,rgba(27,34,46,.72),rgba(13,17,24,.72))}
+.pinned-heading{display:flex;align-items:center;gap:9px;color:#b8c4d6;margin:0 0 6px}
+.pinned-heading h2{font-family:'Instrument Serif',serif;font-size:21px;font-weight:400;color:#e6e8ed;margin:0}
+.pinned-heading span{font-size:9px;color:#818b9a}
+.pinned-memories .entry-card:first-child{border-top:1px solid var(--line)}
+.pin-button{position:absolute;right:92px;top:16px;padding:6px;border:0;background:transparent;color:#7f8998;opacity:.65;transform:rotate(-35deg)}
+.pin-button:hover,.pin-button.is-pinned{color:#d6dfed;opacity:1}
+.pin-button.is-pinned{filter:drop-shadow(0 0 5px rgba(190,207,233,.28))}
+.memory-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.memory-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border:1px solid rgba(190,202,222,.14);border-radius:2px;color:#aeb9ca;background:rgba(177,194,220,.055);font-size:9px;letter-spacing:.15px}
+.memory-tag-input{background:#191f29;border:1px solid var(--line);color:#e5e8ee;padding:10px;font-size:11px;outline:0}
+.memory-tag-input:focus{border-color:rgba(190,202,222,.4)}
+.tag-hint{font-size:9px;color:#747e8b;line-height:1.4}
+@media(max-width:650px){.pinned-memories{padding:14px 12px}.pin-button{right:88px}}
