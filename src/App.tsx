@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth'
 import { auth, googleProvider } from './firebase'
 import { ensureUserProfile } from './userProfile'
-import { Aperture, BookOpen, Brain, ChevronRight, Compass, Film, FolderHeart, House, Menu, Plus, Search, Settings2, Sparkles, X, Feather, Pencil, Lock, Trash2, Layers, Star, ArrowLeft, Link2, Pin, Tag } from 'lucide-react'
+import { Aperture, BookOpen, Brain, ChevronRight, Compass, Film, FolderHeart, House, Menu, Plus, Search, Settings2, Sparkles, X, Feather, Pencil, Lock, Trash2, Layers, Star, ArrowLeft, Link2, Pin, Tag, UserCircle } from 'lucide-react'
 import { deleteEntry, getEntries, saveEntry, getCollections, saveCollection, deleteCollection, type Entry, type EntryKind, type Privacy, type Collection } from './db'
 
 const sections = [
