@@ -1,5 +1,5 @@
 const CACHE_NAME = 'solace-shell-v2';
-const SHELL = ['/', '/manifest.json', '/icons/solace.svg'];
+const SHELL = ['/', '/manifest.json', '/icons/solace.svg', '/icons/solace-192.png', '/icons/solace-512.png', '/icons/solace-180.png', '/icons/solace-32.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
 });
