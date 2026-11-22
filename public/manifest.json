@@ -4,7 +4,7 @@
   "description": "A personal universe for memories, reflections, and experiences.",
   "start_url": "/",
   "scope": "/",
-  "display": "standalone",
+  "display": "portrait-primary",
   "orientation": "any",
   "background_color": "#080a0e",
   "theme_color": "#080a0e",
