@@ -1,0 +1,15 @@
+{
+  "name": "Solace — A place to simply be",
+  "short_name": "Solace",
+  "description": "A personal universe for memories, reflections, and experiences.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#080a0e",
+  "theme_color": "#080a0e",
+  "icons": [
+    { "src": "/icons/solace.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icons/solace.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
