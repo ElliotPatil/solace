@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { Aperture, BookOpen, Brain, ChevronRight, Compass, Film, FolderHeart, House, Menu, Plus, Search, Settings2, Sparkles, X, Feather, Lock, Trash2, Layers, Star, ArrowLeft, Link2 } from 'lucide-react'
 import { deleteEntry, getEntries, saveEntry, getCollections, saveCollection, deleteCollection, type Entry, type EntryKind, type Privacy, type Collection } from './db'
 
@@ -50,7 +50,7 @@ function App() {
   useEffect(() => { void refresh() }, [])
   const filtered = useMemo(() => entries.filter(e => (e.title + ' ' + e.body).toLowerCase().includes(query.toLowerCase())), [entries, query])
   const recent = entries.slice(0, 3)
-  async function createEntry(event: React.FormEvent) {
+  async function createEntry(event: FormEvent) {
     event.preventDefault()
     if (!title.trim() && !body.trim()) return
     await saveEntry({ id: crypto.randomUUID(), kind, title: title.trim() || 'Untitled', body: body.trim(), createdAt: new Date().toISOString(), privacy, collectionId: attachCollection || undefined })
