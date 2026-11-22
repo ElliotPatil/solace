@@ -51,6 +51,28 @@ function App() {
   useEffect(() => { void refresh() }, [])
   const filtered = useMemo(() => entries.filter(e => (e.title + ' ' + e.body).toLowerCase().includes(query.toLowerCase())), [entries, query])
   const recent = entries.slice(0, 3)
+  const memoryGroups = useMemo(() => {
+    const memories = filtered.filter(entry => entry.kind === 'memory')
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const yesterday = new Date(today)
+    yesterday.setDate(yesterday.getDate() - 1)
+    const groups = new Map<string, { label: string; entries: Entry[] }>()
+    memories.forEach(entry => {
+      const date = new Date(entry.createdAt)
+      const day = new Date(date)
+      day.setHours(0, 0, 0, 0)
+      const key = `${day.getFullYear()}-${day.getMonth()}-${day.getDate()}`
+      const label = day.getTime() === today.getTime()
+        ? 'Today'
+        : day.getTime() === yesterday.getTime()
+          ? 'Yesterday'
+          : new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: day.getFullYear() === today.getFullYear() ? undefined : 'numeric' }).format(day)
+      if (!groups.has(key)) groups.set(key, { label, entries: [] })
+      groups.get(key)!.entries.push(entry)
+    })
+    return Array.from(groups.values())
+  }, [filtered])
   async function createEntry(event: FormEvent) {
     event.preventDefault()
     if (!title.trim() && !body.trim()) return
@@ -88,7 +110,7 @@ function App() {
         {active==='Sanctuary'&&<div className="content sanctuary"><section className="hero"><div className="hero-glow"/><div className="hero-stars"/><div className="hero-content"><div className="eyebrow"><span className="eyebrow-dot"/> {date.toUpperCase()}</div><h1>Welcome <em>home.</em></h1><p className="hero-subtitle">A quiet corner of the universe, just for you.</p><button className="hero-cta" onClick={()=>{setEditingId(null);setShowComposer(true)}}>Leave a little note <ChevronRight size={16}/></button></div><div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/><div className="hero-orb"/><div className="hero-footnote">TAKE YOUR TIME <span>✳</span> THERE IS NO RUSH</div></section>
           <section className="lower-grid"><div className="section-block"><div className="section-heading"><div><div className="eyebrow muted">A LITTLE ARCHIVE</div><h2>Recently remembered</h2></div><button className="text-link" onClick={()=>setActive('Memories')}>View all <ChevronRight size={14}/></button></div>{recent.length?<div className="entry-list">{recent.map(entryCard)}</div>:<div className="empty-state"><span className="empty-star">✳</span><p>Your story will find its way here.</p><button onClick={()=>setShowComposer(true)}>Save your first memory <ChevronRight size={14}/></button></div>}</div>
           <div className="section-block universe-card"><div className="eyebrow muted">YOUR UNIVERSE</div><h2>{entries.length?entries.length+' moments, and counting.':'Everything is connected.'}</h2><div className="constellation"><span className="constellation-line line-a"/><span className="constellation-line line-b"/>{entries.slice(0,9).map((e,i)=><i key={e.id} className="star" style={{left:(15+(i*31)%75)+'%',top:(12+(i*47)%75)+'%'}}/>)}<div className="constellation-core"><Aperture size={22}/></div></div><button className="text-link" onClick={()=>setActive('Universe')}>Wander through your universe <ChevronRight size={14}/></button></div></section></div>}
-        {active==='Memories'&&<div className="content inner-page"><div className="inner-kicker">YOUR SPACE · MEMORIES</div><h1>Keep what matters.</h1><p className="inner-description">A small archive of moments you'd like to carry.</p><button className="new-button page-new" onClick={()=>{setKind('memory');setShowComposer(true)}}><Plus size={16}/> New memory</button><div className="entry-list page-entries">{filtered.filter(e=>e.kind==='memory').map(entryCard)}</div></div>}
+        {active==='Memories'&&<div className="content inner-page"><div className="inner-kicker">YOUR SPACE · MEMORIES</div><h1>Keep what matters.</h1><p className="inner-description">A small archive of moments you'd like to carry.</p><button className="new-button page-new" onClick={()=>{setKind('memory');setShowComposer(true)}}><Plus size={16}/> New memory</button><div className="memory-timeline page-entries">{memoryGroups.length ? memoryGroups.map(group=><section className="memory-day" key={group.label}><div className="memory-day-heading"><span className="memory-day-dot"/><h2>{group.label}</h2><span className="memory-day-count">{group.entries.length} {group.entries.length===1?'moment':'moments'}</span></div><div className="entry-list">{group.entries.map(entryCard)}</div></section>) : <div className="memory-empty"><span className="empty-star">✳</span><p>{query ? 'No memories found for that search.' : 'Some moments are worth keeping.'}</p><span>{query ? 'Try another word or phrase.' : 'Whenever you are ready, leave a little piece of today here.'}</span>{!query&&<button className="hero-cta" onClick={()=>{setKind('memory');setShowComposer(true)}}>Save your first memory <ChevronRight size={14}/></button>}</div>}</div></div>}
         {active==='Reflect'&&<div className="content inner-page"><div className="inner-kicker">YOUR SPACE · REFLECT</div><h1>Make room for a thought.</h1><p className="inner-description">No right answer. No need to finish. Just a little room to notice.</p><div className="reflect-prompt"><div className="eyebrow muted">A THOUGHT TO SIT WITH</div><p>{prompts[Math.floor((new Date().getDate()+new Date().getMonth())%prompts.length)]}</p><button className="hero-cta" onClick={()=>startPrompt(prompts[Math.floor((new Date().getDate()+new Date().getMonth())%prompts.length)])}>Write about this <ChevronRight size={15}/></button></div><div className="section-heading" style={{marginTop:45}}><div><div className="eyebrow muted">YOUR REFLECTIONS</div><h2>Things on your mind</h2></div></div><div className="entry-list page-entries">{filtered.filter(e=>e.kind==='reflection').map(entryCard)}</div></div>}
         {active==='Experiences'&&<div className="content inner-page"><div className="inner-kicker">YOUR SPACE · EXPERIENCES</div><h1>Life, as it happens.</h1><p className="inner-description">Save the trips, firsts, ordinary days, and stories you want to remember.</p><button className="new-button page-new" onClick={()=>{setKind('experience');setShowComposer(true)}}><Plus size={16}/> Capture experience</button><div className="entry-list page-entries">{filtered.filter(e=>e.kind==='experience').map(entryCard)}</div></div>}
         {active==='Discover'&&<div className="content inner-page"><div className="inner-kicker">YOUR SPACE · DISCOVER</div><h1>Follow what fascinates you.</h1><p className="inner-description">Gentle invitations to explore ideas, places and questions. Nothing to complete.</p><div className="discover-grid">{discoveries.map((d,i)=><article className="discover-card" key={d.title}><div className="eyebrow muted">0{i+1} · OPEN ENDED</div><h2>{d.title}</h2><p>{d.body}</p><button className="hero-cta" onClick={()=>startPrompt(d.prompt)}>Explore this <ChevronRight size={15}/></button></article>)}</div></div>}
