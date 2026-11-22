@@ -1,2 +1,2 @@
-# solace-app
-This is my own universe
+# _solace_
+*This is my own universe*
