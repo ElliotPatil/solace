@@ -49,3 +49,23 @@
 /* Native app feel: prevent accidental text selection outside editable fields */
 html,body,.app-shell,.sidebar,.main,.topbar,.content,.nav-item,.icon-button,.new-button,.hero,.hero-cta,.entry-card,.entry-symbol,.empty-state,.discover-card,.collection-card,.universe-map,.universe-star,.account-page-card,.nav-account-button,.memory-tag,.memory-day-heading{ -webkit-user-select:none; user-select:none; }
 input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webkit-user-select:text; user-select:text; }
+
+/* Subtle reactive depth — gentle lift, not a bouncy interface */
+@media (hover:hover) and (pointer:fine){
+  .entry-card,.discover-card,.collection-card,.pinned-memories,.account-page-card,.account-panel,.composer,.universe-card{
+    transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease, background .22s ease;
+  }
+  .entry-card:hover,.discover-card:hover,.collection-card:hover,.pinned-memories:hover,.account-page-card:hover,.account-panel:hover,.composer:hover,.universe-card:hover{
+    transform:translateY(-2px);
+    border-color:rgba(195,207,228,.23);
+    box-shadow:0 8px 24px rgba(0,0,0,.14);
+  }
+}
+.entry-card:active,.discover-card:active,.collection-card:active,.pinned-memories:active,.account-page-card:active,.account-panel:active{
+  transform:translateY(0);
+}
+@media(prefers-reduced-motion:reduce){
+  .entry-card,.discover-card,.collection-card,.pinned-memories,.account-page-card,.account-panel,.composer,.universe-card{
+    transition:none!important;
+  }
+}
