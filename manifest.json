@@ -6,8 +6,8 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#080a0e",
-  "theme_color": "#080a0e",
+  "background_color": "#191919",
+  "theme_color": "#191919",
   "icons": [
     {
       "src": "/icons/solace-192.png",
