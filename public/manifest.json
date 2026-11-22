@@ -4,8 +4,8 @@
   "description": "A personal universe for memories, reflections, and experiences.",
   "start_url": "/",
   "scope": "/",
-  "display": "portrait-primary",
-  "orientation": "any",
+  "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#080a0e",
   "theme_color": "#080a0e",
   "icons": [
@@ -20,11 +20,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
-
-      "src": "/icons/solace-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
     }
   ]
 }
