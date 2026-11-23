@@ -3,12 +3,17 @@ export type Privacy = 'private' | 'ai-readable' | 'shareable'
 export interface Entry { id:string; kind:EntryKind; title:string; body:string; createdAt:string; privacy:Privacy; collectionId?:string; pinned?:boolean; tags?:string[] }
 export interface Collection { id:string; name:string; description:string; createdAt:string }
 export interface Draft { id:string; kind:EntryKind; title:string; body:string; createdAt:string; updatedAt:string; privacy:Privacy; collectionId?:string; tags?:string[] }
+export type MoodValue = 'Heavy' | 'Low' | 'Steady' | 'Good' | 'Bright'
+export interface MoodCheckin { id:string; mood:MoodValue; note?:string; createdAt:string }
+export interface QuietMoment { id:string; text:string; createdAt:string }
 
 const DB_NAME='solace-local'
-const DB_VERSION=3
+const DB_VERSION=4
 const ENTRIES='entries'
 const COLLECTIONS='collections'
 const DRAFTS='drafts'
+const MOODS='mood-checkins'
+const QUIET_MOMENTS='quiet-moments'
 
 function openDatabase():Promise<IDBDatabase>{
   return new Promise((resolve,reject)=>{
@@ -18,6 +23,8 @@ function openDatabase():Promise<IDBDatabase>{
       if(!db.objectStoreNames.contains(ENTRIES)) db.createObjectStore(ENTRIES,{keyPath:'id'})
       if(!db.objectStoreNames.contains(COLLECTIONS)) db.createObjectStore(COLLECTIONS,{keyPath:'id'})
       if(!db.objectStoreNames.contains(DRAFTS)) db.createObjectStore(DRAFTS,{keyPath:'id'})
+      if(!db.objectStoreNames.contains(MOODS)) db.createObjectStore(MOODS,{keyPath:'id'})
+      if(!db.objectStoreNames.contains(QUIET_MOMENTS)) db.createObjectStore(QUIET_MOMENTS,{keyPath:'id'})
     }
     request.onsuccess=()=>resolve(request.result)
     request.onerror=()=>reject(request.error)
@@ -69,3 +76,8 @@ export async function getDrafts():Promise<Draft[]>{
 }
 export async function saveDraft(draft:Draft):Promise<void>{await runRequest(DRAFTS,'readwrite',store=>store.put(draft))}
 export async function deleteDraft(id:string):Promise<void>{await runRequest(DRAFTS,'readwrite',store=>store.delete(id))}
+
+export async function getMoodCheckins():Promise<MoodCheckin[]>{const rows=await runRequest<MoodCheckin[]>(MOODS,'readonly',store=>store.getAll());return rows.sort((a,b)=>b.createdAt.localeCompare(a.createdAt))}
+export async function saveMoodCheckin(item:MoodCheckin):Promise<void>{await runRequest(MOODS,'readwrite',store=>store.put(item))}
+export async function getQuietMoments():Promise<QuietMoment[]>{const rows=await runRequest<QuietMoment[]>(QUIET_MOMENTS,'readonly',store=>store.getAll());return rows.sort((a,b)=>b.createdAt.localeCompare(a.createdAt))}
+export async function saveQuietMoment(item:QuietMoment):Promise<void>{await runRequest(QUIET_MOMENTS,'readwrite',store=>store.put(item))}
