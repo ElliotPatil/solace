@@ -2,11 +2,13 @@ export type EntryKind = 'memory' | 'reflection' | 'experience'
 export type Privacy = 'private' | 'ai-readable' | 'shareable'
 export interface Entry { id:string; kind:EntryKind; title:string; body:string; createdAt:string; privacy:Privacy; collectionId?:string; pinned?:boolean; tags?:string[] }
 export interface Collection { id:string; name:string; description:string; createdAt:string }
+export interface Draft { id:string; kind:EntryKind; title:string; body:string; createdAt:string; updatedAt:string; privacy:Privacy; collectionId?:string; tags?:string[] }
 
 const DB_NAME='solace-local'
-const DB_VERSION=2
+const DB_VERSION=3
 const ENTRIES='entries'
 const COLLECTIONS='collections'
+const DRAFTS='drafts'
 
 function openDatabase():Promise<IDBDatabase>{
   return new Promise((resolve,reject)=>{
@@ -15,6 +17,7 @@ function openDatabase():Promise<IDBDatabase>{
       const db=request.result
       if(!db.objectStoreNames.contains(ENTRIES)) db.createObjectStore(ENTRIES,{keyPath:'id'})
       if(!db.objectStoreNames.contains(COLLECTIONS)) db.createObjectStore(COLLECTIONS,{keyPath:'id'})
+      if(!db.objectStoreNames.contains(DRAFTS)) db.createObjectStore(DRAFTS,{keyPath:'id'})
     }
     request.onsuccess=()=>resolve(request.result)
     request.onerror=()=>reject(request.error)
@@ -59,3 +62,10 @@ export async function deleteCollection(id:string):Promise<void>{
     tx.onabort=()=>{db.close();reject(tx.error)}
   })
 }
+
+export async function getDrafts():Promise<Draft[]>{
+  const rows=await runRequest<Draft[]>(DRAFTS,'readonly',store=>store.getAll())
+  return rows.sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt))
+}
+export async function saveDraft(draft:Draft):Promise<void>{await runRequest(DRAFTS,'readwrite',store=>store.put(draft))}
+export async function deleteDraft(id:string):Promise<void>{await runRequest(DRAFTS,'readwrite',store=>store.delete(id))}
