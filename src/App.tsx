@@ -150,7 +150,7 @@ function App() {
     const tags = kind === 'memory' ? Array.from(new Set(memoryTags.split(',').map(tag => tag.trim().replace(/^#/, '')).filter(Boolean))).slice(0, 12) : undefined
     const savedDate = new Date(`${entryDate}T12:00:00`).toISOString()
     await saveEntry({ id: editingId || crypto.randomUUID(), kind, title: title.trim() || 'Untitled', body: body.trim(), createdAt: savedDate, privacy, collectionId: attachCollection || undefined, pinned: kind === 'memory' ? existing?.pinned || false : undefined, tags })
-    setTitle(''); setBody(''); setPrivacy('private'); setMemoryTags(''); setAttachCollection(''); setEditingId(null); setShowComposer(false); await refresh()
+    setTitle(''); setBody(''); setPrivacy('private'); setMemoryTags(''); setAttachCollection(''); setEntryDate(new Date().toISOString().slice(0, 10)); setEditingId(null); setShowComposer(false); await refresh()
   }
   function editEntry(entry:Entry) {
     const localDate = new Date(entry.createdAt)
