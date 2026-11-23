@@ -70,7 +70,7 @@ function App() {
     const reader = new FileReader()
     reader.onload = () => { const image = new Image(); image.onload = () => { const canvas = document.createElement('canvas'); canvas.width=256; canvas.height=256; const ctx=canvas.getContext('2d'); if(!ctx)return; const crop=Math.min(image.width,image.height); ctx.drawImage(image,(image.width-crop)/2,(image.height-crop)/2,crop,crop,0,0,256,256); setProfileAvatar(canvas.toDataURL('image/jpeg',.82)); setAuthMessage('Profile picture ready. Save your profile to keep it.') }; image.src=String(reader.result) }
     reader.readAsDataURL(file)
-  })
+  }
   async function refresh() {
     try { setEntries(await getEntries()); setCollections(await getCollections()) } catch { /* offline storage unavailable */ }
   }
