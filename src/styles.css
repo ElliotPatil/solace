@@ -260,3 +260,10 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .universe-connection-card span{font-size:8px;letter-spacing:.5px;color:#718096;text-transform:capitalize}
 @media(max-width:650px){.universe-connection-list{grid-template-columns:1fr}.universe-connection-card{padding:12px}}
 @media(prefers-reduced-motion:reduce){.universe-links line,.universe-connection-card{transition:none}}
+
+
+/* Profile details in the Sanctuary welcome */
+.hero-personal-touch{display:flex;align-items:center;gap:11px;margin-top:18px;max-width:420px;color:#9ba8ba;font-size:10px;line-height:1.6;letter-spacing:.15px}
+.hero-profile-avatar{width:34px;height:34px;flex:none;object-fit:cover;border-radius:50%;border:1px solid rgba(190,204,226,.35);box-shadow:0 0 16px rgba(168,190,226,.12)}
+.hero-personal-touch span{max-width:340px}
+@media(prefers-reduced-motion:reduce){.hero-profile-avatar{box-shadow:none}}
