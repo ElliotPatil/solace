@@ -245,3 +245,18 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .sanctuary-feedback{color:#aab8cb;font-size:10px;margin:10px 0}
 @media(max-width:650px){.mood-options{grid-template-columns:repeat(3,minmax(0,1fr))}.mood-option{min-height:72px}.sanctuary-checkin,.quiet-moments{padding:20px 16px}}
 @media(prefers-reduced-motion:reduce){.mood-option{transition:none}}
+
+/* Universe 2.0 — explainable connections */
+.universe-links line{stroke:rgba(190,207,233,.52);stroke-dasharray:1.2 1.8;vector-effect:non-scaling-stroke;transition:opacity .2s,stroke-width .2s}
+.universe-related{margin-top:24px;padding-top:18px}
+.universe-related-heading{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0;border:0;background:transparent;color:#8996a8;text-align:left;cursor:pointer}
+.universe-related-heading>span{font-size:8px;letter-spacing:1.6px}
+.universe-related-heading small{display:flex;align-items:center;gap:5px;color:#aeb8c8;font-size:9px;letter-spacing:0}
+.universe-connection-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px}
+.universe-connection-card{display:grid;gap:7px;text-align:left;padding:13px 14px;background:rgba(255,255,255,.025);border:1px solid rgba(190,204,226,.11);color:#d5deeb;cursor:pointer;transition:background .2s,border-color .2s}
+.universe-connection-card:hover{background:rgba(190,204,226,.07);border-color:rgba(190,204,226,.3)}
+.universe-connection-card strong{font-size:11px;font-weight:500;overflow-wrap:anywhere}
+.universe-connection-card small{font-size:9px;line-height:1.5;color:#aab8cb;overflow-wrap:anywhere}
+.universe-connection-card span{font-size:8px;letter-spacing:.5px;color:#718096;text-transform:capitalize}
+@media(max-width:650px){.universe-connection-list{grid-template-columns:1fr}.universe-connection-card{padding:12px}}
+@media(prefers-reduced-motion:reduce){.universe-links line,.universe-connection-card{transition:none}}
