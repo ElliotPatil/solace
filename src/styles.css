@@ -419,3 +419,23 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .quiet-recap-list button{transition:background .2s ease,padding .2s ease;}
 .quiet-recap-list button:hover{background:rgba(177,194,220,.035);padding-left:9px;padding-right:9px;}
 @media(max-width:650px){.sanctuary .hero{height:430px;min-height:430px;border-radius:2px}.sanctuary .hero h1{font-size:clamp(50px,15vw,66px);letter-spacing:-1.8px}.sanctuary-checkin,.quiet-moments{margin:25px 0;padding:22px 17px}.mood-options{gap:5px}.mood-option{min-height:74px;gap:8px}.mood-option span{font-size:9px}.quiet-recap{margin-top:42px;padding-top:24px}}
+
+/* Memory detail polish — focus the saved entry as a readable, quiet page */
+.memory-detail-backdrop{align-items:center;overflow-y:auto;}
+.memory-detail-modal{border-radius:2px;position:relative;}
+.memory-detail-top .eyebrow{line-height:1.6;}
+.memory-detail-date{display:flex;align-items:center;gap:9px;letter-spacing:1px;text-transform:uppercase;}
+.memory-detail-date:before{content:'';width:16px;height:1px;background:var(--accent);opacity:.65;}
+.memory-detail-modal h2{max-width:580px;}
+.memory-detail-body{max-width:590px;font-size:clamp(13px,1.2vw,15px);line-height:2.05;letter-spacing:.08px;}
+.memory-detail-modal .memory-tags{display:flex;flex-wrap:wrap;gap:7px;}
+.memory-detail-modal .memory-tag{padding:7px 10px;border-radius:2px;background:rgba(190,204,226,.035);border:1px solid rgba(190,204,226,.09);}
+.memory-detail-related{background:rgba(177,194,220,.018);padding:18px 12px;}
+.memory-detail-related button{transition:transform .2s ease,border-color .2s ease,background .2s ease;}
+.memory-detail-related button:hover{transform:translateX(3px);}
+.memory-detail-footer{margin-top:28px;}
+.memory-detail-footer button{transition:color .2s ease,transform .2s ease;}
+.memory-detail-footer button:hover{transform:translateY(-1px);}
+.memory-detail-pin{border-radius:2px;transition:background .2s ease,border-color .2s ease,color .2s ease;}
+.memory-detail-modal button:focus-visible{outline:1px solid rgba(200,214,234,.55);outline-offset:3px;}
+@media(max-width:600px){.memory-detail-backdrop{align-items:flex-start;padding:10px}.memory-detail-modal{margin:8px 0}.memory-detail-body{font-size:13px;line-height:1.9}.memory-detail-footer{margin-top:20px}}
