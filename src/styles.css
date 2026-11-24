@@ -584,3 +584,17 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
   .universe-nebula i{animation:none!important}
   .universe-links line,.universe-star small,.universe-expand{transition:none!important}
 }
+
+/* Universe 3.1 — open, movable infinite-feeling canvas */
+.universe-map.enhanced-map{position:relative;overflow:hidden;cursor:grab;touch-action:none;background-color:#05080e;background-image:radial-gradient(ellipse at 50% 48%,rgba(22,34,53,.38),transparent 68%),radial-gradient(circle at 18% 22%,rgba(84,107,145,.09),transparent 30%),radial-gradient(circle at 82% 76%,rgba(101,75,126,.08),transparent 34%)}
+.universe-map.enhanced-map:active{cursor:grabbing}
+.universe-world{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform;pointer-events:none}
+.universe-world .universe-star{pointer-events:auto}
+.universe-world .universe-nebula{pointer-events:none}
+.universe-world .universe-links{pointer-events:none}
+.universe-view-controls{position:absolute;z-index:7;right:17px;bottom:54px;display:flex;align-items:center;gap:3px;padding:4px;border:1px solid rgba(192,207,231,.16);background:rgba(8,12,19,.76);backdrop-filter:blur(12px)}
+.universe-view-controls button{min-width:30px;height:29px;padding:0 8px;border:0;background:transparent;color:#bfcbdc;font-size:13px;cursor:pointer}
+.universe-view-controls button:nth-child(2){min-width:52px;font-size:9px;color:#8290a5}
+.universe-view-controls button:hover{background:rgba(190,207,232,.1);color:#fff}
+.universe-map-fullscreen .universe-view-controls{right:22px;bottom:68px}
+@media(max-width:650px){.universe-view-controls{right:10px;bottom:48px}.universe-map-fullscreen .universe-view-controls{right:14px;bottom:58px}}
