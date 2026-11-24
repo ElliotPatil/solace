@@ -277,8 +277,8 @@ function App() {
     <div className="app-shell">
       <aside className={`sidebar ${menuOpen ? 'sidebar-open' : ''}`}>
         <div className="brand"><div className="brand-mark"><img className="brand-image" src="/icons/solace-192.png" alt="" aria-hidden="true" /></div><span>solace</span></div>
-        <div className="side-caption">YOUR SPACE</div><nav>{sections.map(({id,icon:Icon})=><button key={id} className={`nav-item ${active===id?'active':''}`} onClick={()=>{setActive(id);setMenuOpen(false);setSelectedCollection(null)}}><Icon size={17} strokeWidth={1.65}/><span>{id}</span></button>)}</nav>
-        <div className="sidebar-bottom"><div className="privacy-note"><Lock size={14}/><span>Stored on this device.</span></div><button className="nav-item settings" onClick={()=>setActive('Settings')}><Settings2 size={17}/><span>Settings</span></button><div className="side-foot">A PLACE TO SIMPLY BE</div></div>
+        <div className="side-caption">YOUR SPACE</div><nav aria-label="Solace sections">{sections.map(({id,icon:Icon})=><button key={id} type="button" aria-current={active===id?'page':undefined} className={`nav-item ${active===id?'active':''}`} onClick={()=>{setActive(id);setMenuOpen(false);setSelectedCollection(null)}}><Icon className="nav-icon" size={17} strokeWidth={1.65}/><span>{id}</span><span className="nav-active-mark" aria-hidden="true"/></button>)}</nav>
+        <div className="sidebar-bottom"><div className="privacy-note"><Lock size={14}/><span>Stored on this device.</span></div><button type="button" aria-current={active==='Settings'?'page':undefined} className={`nav-item settings ${active==='Settings'?'active':''}`} onClick={()=>{setActive('Settings');setMenuOpen(false)}}><Settings2 className="nav-icon" size={17}/><span>Settings</span><span className="nav-active-mark" aria-hidden="true"/></button><div className="side-foot">A PLACE TO SIMPLY BE</div></div>
       </aside>
       {menuOpen&&<button className="scrim" aria-label="Close navigation" onClick={()=>setMenuOpen(false)}/>}
       <main className="main">
