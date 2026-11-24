@@ -439,3 +439,18 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .memory-detail-pin{border-radius:2px;transition:background .2s ease,border-color .2s ease,color .2s ease;}
 .memory-detail-modal button:focus-visible{outline:1px solid rgba(200,214,234,.55);outline-offset:3px;}
 @media(max-width:600px){.memory-detail-backdrop{align-items:flex-start;padding:10px}.memory-detail-modal{margin:8px 0}.memory-detail-body{font-size:13px;line-height:1.9}.memory-detail-footer{margin-top:20px}}
+
+/* Search 2.0 — preview matches before opening them */
+.search-panel-enhanced{width:min(440px,calc(100vw - 28px));max-height:min(70vh,560px);overflow:hidden;padding:0;display:block;border-radius:3px;}
+.search-panel-input-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(195,207,228,.1);}
+.search-panel-input-row input{flex:1;width:100%;min-width:0;}
+.search-panel-input-row .icon-button{flex:none;}
+.search-results-preview{max-height:calc(min(70vh,560px) - 54px);overflow-y:auto;display:grid;gap:0;padding:5px;}
+.search-results-preview button{display:grid;gap:5px;text-align:left;background:transparent;border:1px solid transparent;padding:12px 10px;color:#dfe4eb;transition:background .18s,border-color .18s,transform .18s;}
+.search-results-preview button:hover{background:rgba(190,204,226,.045);border-color:rgba(190,204,226,.08);transform:translateX(2px);}
+.search-result-type{font-size:8px;color:#8995a6;text-transform:uppercase;letter-spacing:1.1px;}
+.search-results-preview strong{font:400 17px 'Instrument Serif',serif;overflow-wrap:anywhere;}
+.search-result-snippet{font-size:10px;color:#8993a2;line-height:1.5;overflow-wrap:anywhere;}
+.search-no-results,.search-more-results{font-size:10px;color:#818b99;padding:13px 10px;margin:0;}
+.search-more-results{display:block;text-align:center;border-top:1px solid rgba(195,207,228,.07);}
+@media(max-width:650px){.search-panel-enhanced{right:14px;top:58px}.search-panel-input-row{padding:10px}.search-results-preview button{padding:11px 9px}}
