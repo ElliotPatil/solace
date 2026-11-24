@@ -454,3 +454,24 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .search-no-results,.search-more-results{font-size:10px;color:#818b99;padding:13px 10px;margin:0;}
 .search-more-results{display:block;text-align:center;border-top:1px solid rgba(195,207,228,.07);}
 @media(max-width:650px){.search-panel-enhanced{right:14px;top:58px}.search-panel-input-row{padding:10px}.search-results-preview button{padding:11px 9px}}
+
+/* Solace motion system — soft feedback, never attention-grabbing */
+:root{--solace-ease:cubic-bezier(.2,.7,.25,1);--solace-fast:160ms;--solace-mid:240ms;}
+@media(prefers-reduced-motion:no-preference){
+ .main{animation:solace-page-in 320ms var(--solace-ease) both;}
+ .entry-card,.memory-day,.experience-year,.collection-card,.discover-card,.prompt-library-card,.experience-prompt-grid button,.quiet-moment-item,.on-this-day-entry,.memory-calendar-day{animation:solace-item-in 360ms var(--solace-ease) both;}
+ .entry-card:hover{background:rgba(190,204,226,.018);}
+ .entry-symbol,.memory-calendar-day,.text-link,.icon-button,.new-button,.quick-capture-button,.hero-cta,.delete-button,.edit-button,.pin-button{transition:color var(--solace-fast) ease,background var(--solace-fast) ease,border-color var(--solace-fast) ease,transform var(--solace-fast) var(--solace-ease),opacity var(--solace-fast) ease;}
+ .new-button:hover,.quick-capture-button:hover{transform:translateY(-1px);}
+ .icon-button:active,.new-button:active,.quick-capture-button:active,.hero-cta:active{transform:scale(.98);}
+ .modal-backdrop,.crop-modal-backdrop{animation:solace-backdrop-in 180ms ease both;}
+ .composer,.crop-modal,.memory-detail-modal{animation:solace-modal-in 240ms var(--solace-ease) both;}
+ .entry-card:hover .entry-symbol{transform:translateY(-1px);}
+}
+@keyframes solace-page-in{from{opacity:.94}to{opacity:1}}
+@keyframes solace-item-in{from{opacity:.88;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes solace-backdrop-in{from{opacity:0}to{opacity:1}}
+@keyframes solace-modal-in{from{opacity:0;transform:translateY(7px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
+:where(button,a,input,textarea,select):focus-visible{outline:1px solid rgba(190,207,233,.55);outline-offset:3px;}
+:where(button,a):disabled{cursor:not-allowed;opacity:.45;}
+@media(prefers-reduced-motion:reduce){.main,.entry-card,.memory-day,.experience-year,.collection-card,.discover-card,.prompt-library-card,.experience-prompt-grid button,.quiet-moment-item,.on-this-day-entry,.memory-calendar-day,.modal-backdrop,.crop-modal-backdrop,.composer,.crop-modal,.memory-detail-modal{animation:none!important;transition:none!important;transform:none!important}}
