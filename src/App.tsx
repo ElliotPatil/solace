@@ -170,6 +170,12 @@ function App() {
   const calendarDayEntries = useMemo(() => entries.filter(e=>e.kind==='memory' && calendarSelectedDay && new Date(e.createdAt).toLocaleDateString()===new Date(calendarSelectedDay+'T00:00:00').toLocaleDateString()), [entries, calendarSelectedDay])
   const memoryFiltered = useMemo(() => filtered.filter(e => e.kind === 'memory' && (activeMemoryTag === 'All tags' || (e.tags || []).some(tag => tag.toLowerCase() === activeMemoryTag.toLowerCase())) && (activeMemoryYear === 'All years' || new Date(e.createdAt).getFullYear().toString() === activeMemoryYear)), [filtered, activeMemoryTag, activeMemoryYear])
   const recent = entries.slice(0, 3)
+  const recapWindowStart = new Date(); recapWindowStart.setDate(recapWindowStart.getDate() - 30)
+  const recapEntries = entries.filter(entry => new Date(entry.createdAt) >= recapWindowStart).sort((a,b)=>b.createdAt.localeCompare(a.createdAt)
+  )
+  const recapMemories = recapEntries.filter(entry=>entry.kind==='memory').length
+  const recapExperiences = recapEntries.filter(entry=>entry.kind==='experience').length
+  const recapReflections = recapEntries.filter(entry=>entry.kind==='reflection').length
   const onThisDay = entries.filter(e => { const d=new Date(e.createdAt); const now=new Date(); return d.getMonth()===now.getMonth()&&d.getDate()===now.getDate()&&d.getFullYear()<now.getFullYear() }).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime()).slice(0,2)
   const universePositions = [[12,18],[23,35],[36,15],[48,27],[65,16],[80,27],[17,54],[30,69],[42,48],[59,62],[72,48],[88,66],[8,80],[25,88],[39,82],[53,91],[67,83],[81,91],[93,12],[9,39],[54,10],[71,31],[86,44],[16,68],[34,28],[46,74],[61,40],[77,14],[90,83],[3,57],[29,48],[49,51]]
   const universeEntries = entries.filter(e => universeFilter === 'all' || e.kind === universeFilter)
