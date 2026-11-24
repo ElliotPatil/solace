@@ -346,3 +346,5 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 @media(max-width:480px){.crop-modal{padding:0 20px calc(env(safe-area-inset-bottom,0px) + 24px)!important}.crop-preview-frame{width:min(84vw,390px)!important}.crop-modal-actions{bottom:calc(env(safe-area-inset-bottom,0px) + 22px)!important}}
 
 .pin-limit-notice{font-size:10px;color:#b5a77c;padding:10px 12px;border:1px solid rgba(190,167,124,.22);background:rgba(190,167,124,.055);margin:0 0 14px;line-height:1.5}
+
+.memory-tag-filters{display:flex;flex-wrap:wrap;gap:7px;margin:22px 0 4px}.memory-tag-filters button{background:transparent;border:1px solid rgba(190,202,222,.14);border-radius:3px;padding:7px 10px;color:#8993a2;font-size:9px;letter-spacing:.15px}.memory-tag-filters button:hover,.memory-tag-filters button.active{color:#e5e8ee;border-color:rgba(190,202,222,.4);background:rgba(177,194,220,.07)}
