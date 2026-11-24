@@ -541,3 +541,46 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 @media(prefers-reduced-motion:reduce) {
   .hero-glow,.hero-stars::before,.hero-stars::after { animation:none !important; }
 }
+
+
+/* Universe 3.0 — an explorable, full-screen memory graph */
+.universe-map{isolation:isolate;min-height:360px;touch-action:pan-y}
+.universe-links{z-index:2}
+.universe-links line{stroke:rgba(183,205,237,.38);stroke-linecap:round;stroke-dasharray:none;transition:opacity .25s,stroke-width .25s}
+.universe-links line.is-focused{stroke:rgba(218,231,251,.9);filter:drop-shadow(0 0 2px rgba(177,205,245,.55))}
+.universe-nebula{position:absolute;z-index:1;left:50%;top:51%;width:min(54vw,560px);height:min(48vw,430px);transform:translate(-50%,-50%);pointer-events:none;filter:blur(1px);opacity:.72}
+.universe-nebula i{position:absolute;inset:10%;border-radius:50%;background:radial-gradient(ellipse at 48% 52%,rgba(118,145,183,.16),rgba(70,91,127,.08) 35%,transparent 72%);animation:universe-nebula-drift 18s ease-in-out infinite alternate}
+.universe-nebula i:nth-child(2){inset:23% 2%;transform:rotate(-28deg);background:radial-gradient(ellipse at center,rgba(145,119,164,.11),rgba(72,95,131,.06) 42%,transparent 72%);animation-duration:24s;animation-direction:alternate-reverse}
+.universe-nebula i:nth-child(3){inset:0 20%;transform:rotate(38deg);background:radial-gradient(ellipse at center,rgba(115,153,181,.1),transparent 68%);animation-duration:30s}
+@keyframes universe-nebula-drift{from{translate:-2% -1%;scale:.96}to{translate:2% 2%;scale:1.06}}
+.universe-map-title{position:absolute;z-index:3;left:25px;top:24px;display:grid;gap:7px;pointer-events:none}
+.universe-map-title span{font-size:8px;letter-spacing:2.2px;color:#8794a8}
+.universe-map-title strong{font:400 22px 'Instrument Serif',serif;color:rgba(226,233,244,.78)}
+.universe-expand{position:absolute;z-index:6;right:17px;top:17px;display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid rgba(192,207,231,.2);background:rgba(8,12,19,.72);backdrop-filter:blur(12px);color:#c5cfdf;font-size:10px;cursor:pointer;transition:background .2s,border-color .2s}
+.universe-expand:hover{background:rgba(30,42,60,.9);border-color:rgba(192,207,231,.42)}
+.universe-star{z-index:4}
+.universe-star span{width:var(--node-size,4px);height:var(--node-size,4px);border-radius:50%;display:block;transition:width .2s,height .2s,box-shadow .2s}
+.universe-star small{position:absolute;left:50%;top:calc(100% + 2px);transform:translateX(-50%);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:3px 6px;background:rgba(7,11,17,.78);border:1px solid rgba(190,207,232,.12);color:#c6d1e2;font-size:9px;opacity:0;pointer-events:none;transition:opacity .18s}
+.universe-star:hover small,.universe-star.chosen small{opacity:1}
+.universe-star.chosen span{width:9px;height:9px;box-shadow:0 0 13px 5px rgba(194,215,245,.72),0 0 30px rgba(172,200,238,.48)}
+.universe-map-caption{z-index:3;bottom:18px;letter-spacing:1.6px}
+.universe-map-fullscreen{position:fixed!important;inset:0!important;z-index:120!important;width:100vw!important;height:100dvh!important;min-height:100dvh!important;margin:0!important;border:0!important;border-radius:0!important;background:radial-gradient(ellipse at 50% 48%,#172334 0%,#0b111b 54%,#05080d 100%)!important;box-shadow:none!important}
+.universe-map-fullscreen .universe-nebula{width:min(66vw,850px);height:min(60vw,700px)}
+.universe-map-fullscreen .universe-map-title{left:34px;top:30px}
+.universe-map-fullscreen .universe-map-title strong{font-size:30px}
+.universe-map-fullscreen .universe-map-caption{bottom:27px}
+@media(max-width:650px){
+  .universe-map-title{left:16px;top:17px}
+  .universe-map-title strong{font-size:18px}
+  .universe-expand{right:10px;top:10px;padding:9px}
+  .universe-expand span{display:none}
+  .universe-nebula{width:90vw;height:78vw}
+  .universe-map-fullscreen .universe-map-title{left:18px;top:18px}
+  .universe-map-fullscreen .universe-map-title strong{font-size:22px}
+  .universe-map-fullscreen .universe-expand{right:14px;top:14px}
+  .universe-map-fullscreen .universe-map-caption{bottom:24px;max-width:90vw;text-align:center}
+}
+@media(prefers-reduced-motion:reduce){
+  .universe-nebula i{animation:none!important}
+  .universe-links line,.universe-star small,.universe-expand{transition:none!important}
+}
