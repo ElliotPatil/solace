@@ -627,3 +627,12 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 @keyframes solace-soft-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:650px){.memory-detail-date-row{align-items:flex-start;gap:10px}.memory-detail-navigation{width:100%;justify-content:space-between}.memory-detail-navigation button{padding:8px 10px}.memory-detail-navigation span{flex:1;text-align:center}}
 @media(prefers-reduced-motion:reduce){.memory-calendar-results{animation:none!important}.search-results-preview button{transition:none!important}}
+
+/* Soul Patterns — quiet theme observations */
+.soul-patterns{margin:24px 0 28px;padding:20px 22px;border:1px solid rgba(190,207,231,.12);background:linear-gradient(120deg,rgba(18,24,34,.55),rgba(10,14,20,.32));border-radius:4px}
+.soul-patterns>p{max-width:500px;margin:9px 0 17px;color:#7f8999;font-size:11px;line-height:1.65}
+.soul-pattern-list{display:flex;flex-wrap:wrap;gap:9px}
+.soul-pattern-list>span{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid rgba(190,207,231,.12);background:rgba(190,207,231,.025);border-radius:2px}
+.soul-pattern-list strong{font-size:10px;color:#bac6d8;font-weight:500}
+.soul-pattern-list small{font-size:8px;color:#697688;letter-spacing:.3px}
+@media(max-width:650px){.soul-patterns{padding:16px}.soul-pattern-list>span{padding:8px 9px}}
