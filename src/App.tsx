@@ -195,7 +195,7 @@ function App() {
       const body = (entry.body || '').toLowerCase()
       const tags = (entry.tags || []).join(' ').toLowerCase()
       const all = title + ' ' + body + ' ' + tags
-      const score = terms.reduce((total, term) => total + (title.includes(term) ? 5 : 0) + (tags.includes(term) ? 3 : 0) + (body.includes(term) ? 1 : 0), 0
+      const score = terms.reduce((total, term) => total + (title.includes(term) ? 5 : 0) + (tags.includes(term) ? 3 : 0) + (body.includes(term) ? 1 : 0), 0)
       return { entry, score, matches: terms.every(term => all.includes(term)) }
     }).filter(item => item.matches).sort((a,b) => b.score - a.score || b.entry.createdAt.localeCompare(a.entry.createdAt)).map(item => item.entry)
   }, [entries, query])
