@@ -201,11 +201,15 @@ function App() {
       const title = (entry.title || '').toLowerCase()
       const body = (entry.body || '').toLowerCase()
       const tags = (entry.tags || []).join(' ').toLowerCase()
-      const all = title + ' ' + body + ' ' + tags
-      const score = terms.reduce((total, term) => total + (title.includes(term) ? 5 : 0) + (tags.includes(term) ? 3 : 0) + (body.includes(term) ? 1 : 0), 0)
-      return { entry, score, matches: terms.every(term => all.includes(term)) }
+      const collection = (collections.find(item => item.id === entry.collectionId)?.name || '').toLowerCase()
+      const date = new Date(entry.createdAt)
+      const dateText = [date.toLocaleDateString(), date.toLocaleDateString(undefined, {month:'long'}), String(date.getFullYear()), String(date.getDate())].join(' ').toLowerCase()
+      const kind = entry.kind.toLowerCase()
+      const searchable = [title, body, tags, collection, kind, dateText].join(' ')
+      const score = terms.reduce((total, term) => total + (title.includes(term) ? 6 : 0) + (tags.includes(term) ? 4 : 0) + (collection.includes(term) ? 3 : 0) + (kind.includes(term) ? 2 : 0) + (dateText.includes(term) ? 2 : 0) + (body.includes(term) ? 1 : 0), 0)
+      return { entry, score, matches: terms.every(term => searchable.includes(term)) }
     }).filter(item => item.matches).sort((a,b) => b.score - a.score || b.entry.createdAt.localeCompare(a.entry.createdAt)).map(item => item.entry)
-  }, [entries, query])
+  }, [entries, collections, query])
   const availableMemoryTags = useMemo(() => Array.from(new Set(entries.filter(e => e.kind === 'memory').flatMap(e => e.tags || []).map(tag => tag.trim()).filter(Boolean))).sort((a,b)=>a.localeCompare(b)), [entries])
   const availableMemoryYears = useMemo(() => Array.from(new Set(entries.filter(e => e.kind === 'memory').map(e => new Date(e.createdAt).getFullYear().toString()))).sort((a,b)=>Number(b)-Number(a)), [entries])
   const calendarCells = useMemo(() => { const first = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), 1); const offset = (first.getDay()+6)%7; const days = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth()+1, 0).getDate(); return Array.from({length:offset+days},(_,i)=>i<offset?null:i-offset+1) }, [calendarMonth])
