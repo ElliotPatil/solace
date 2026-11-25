@@ -13,6 +13,8 @@ const copy: Record<string, string> = {
   Sanctuary: 'A place to simply be.', Discover: 'There is always more to understand about yourself.', Journal: 'Memories, experiences, and a little space to reflect.', Collections: 'Gather the things that mean something to you.',
   Universe: 'Your life, connected in its own way.', 'AI companion': 'A thoughtful space to explore an idea, when you choose.',
 }
+async function fileAsDataUrl(file:File):Promise<string>{return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=()=>reject(reader.error);reader.readAsDataURL(file)})}
+async function compressExperiencePhoto(file:File):Promise<string>{const source=await fileAsDataUrl(file);const image=new Image();await new Promise<void>((resolve,reject)=>{image.onload=()=>resolve();image.onerror=()=>reject(new Error('Could not read image')) ;image.src=source});const max=1440;const scale=Math.min(1,max/Math.max(image.width,image.height));const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(image.width*scale));canvas.height=Math.max(1,Math.round(image.height*scale));const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Image compression unavailable');ctx.drawImage(image,0,0,canvas.width,canvas.height);return canvas.toDataURL('image/jpeg',.78)}
 const prompts = [
   { category:'Moments', text:'What is something small you want to remember about today?' },
   { category:'Thoughts', text:'What idea has been quietly staying with you lately?' },
@@ -64,6 +66,10 @@ function App() {
   const [body, setBody] = useState('')
   const [privacy, setPrivacy] = useState<Privacy>('private')
   const [memoryTags, setMemoryTags] = useState('')
+  const [experiencePhotos, setExperiencePhotos] = useState<string[]>([])
+  const [experienceAudio, setExperienceAudio] = useState('')
+  const [experienceAudioName, setExperienceAudioName] = useState('')
+  const [experienceMediaError, setExperienceMediaError] = useState('')
   const [activeMemoryTag, setActiveMemoryTag] = useState('All tags')
   const [activeMemoryYear, setActiveMemoryYear] = useState('All years')
   const [calendarMonth, setCalendarMonth] = useState(() => new Date(new Date().getFullYear(), new Date().getMonth(), 1))
@@ -281,23 +287,23 @@ function App() {
     const existing = editingId ? entries.find(entry=>entry.id===editingId) : undefined
     const tags = kind === 'memory' ? Array.from(new Set(memoryTags.split(',').map(tag => tag.trim().replace(/^#/, '')).filter(Boolean))).slice(0, 12) : undefined
     const savedDate = new Date(`${entryDate}T12:00:00`).toISOString()
-    await saveEntry({ id: editingId || editingDraftId || crypto.randomUUID(), kind, title: title.trim() || 'Untitled', body: body.trim(), createdAt: savedDate, privacy, collectionId: attachCollection || undefined, pinned: kind === 'memory' ? existing?.pinned || false : undefined, tags })
+    await saveEntry({ id: editingId || editingDraftId || crypto.randomUUID(), kind, title: title.trim() || 'Untitled', body: body.trim(), createdAt: savedDate, privacy, collectionId: attachCollection || undefined, pinned: kind === 'memory' ? existing?.pinned || false : undefined, tags, photos:kind==='experience'?experiencePhotos:undefined, audioData:kind==='experience'?experienceAudio||undefined:undefined, audioName:kind==='experience'?experienceAudioName||undefined:undefined })
     if (editingDraftId) await deleteDraft(editingDraftId)
-    setTitle(''); setBody(''); setPrivacy('private'); setMemoryTags(''); setAttachCollection(''); setEntryDate(new Date().toISOString().slice(0, 10)); setEditingId(null); setEditingDraftId(null); setShowComposer(false); await refresh()
+    setTitle(''); setBody(''); setPrivacy('private'); setMemoryTags(''); setAttachCollection(''); setExperiencePhotos([]); setExperienceAudio(''); setExperienceAudioName(''); setExperienceMediaError(''); setEntryDate(new Date().toISOString().slice(0, 10)); setEditingId(null); setEditingDraftId(null); setShowComposer(false); await refresh()
   }
   function editDraft(draft:Draft) {
     setEditingId(null); setEditingDraftId(draft.id); setKind(draft.kind); setTitle(draft.title); setBody(draft.body)
     setPrivacy(draft.privacy); setMemoryTags((draft.tags || []).join(', ')); setAttachCollection(draft.collectionId || '')
     const localDate = new Date(draft.createdAt); localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset())
-    setEntryDate(localDate.toISOString().slice(0,10)); setShowComposer(true)
+    setEntryDate(localDate.toISOString().slice(0,10)); setExperiencePhotos(draft.photos||[]); setExperienceAudio(draft.audioData||''); setExperienceAudioName(draft.audioName||''); setExperienceMediaError(''); setShowComposer(true)
   }
   async function storeDraft(event?:FormEvent) {
     event?.preventDefault()
     if (!title.trim() && !body.trim()) return
     const now = new Date().toISOString()
     const tags = kind === 'memory' ? Array.from(new Set(memoryTags.split(',').map(tag=>tag.trim().replace(/^#/, '')).filter(Boolean))).slice(0,12) : undefined
-    await saveDraft({ id: editingDraftId || crypto.randomUUID(), kind, title: title.trim(), body: body.trim(), createdAt: new Date(`${entryDate}T12:00:00`).toISOString(), updatedAt: now, privacy, collectionId: attachCollection || undefined, tags })
-    setShowComposer(false); setEditingId(null); setEditingDraftId(null); setTitle(''); setBody(''); setPrivacy('private'); setMemoryTags(''); setAttachCollection(''); setEntryDate(new Date().toISOString().slice(0,10)); await refresh()
+    await saveDraft({ id: editingDraftId || crypto.randomUUID(), kind, title: title.trim(), body: body.trim(), createdAt: new Date(`${entryDate}T12:00:00`).toISOString(), updatedAt: now, privacy, collectionId: attachCollection || undefined, tags, photos:kind==='experience'?experiencePhotos:undefined, audioData:kind==='experience'?experienceAudio||undefined:undefined, audioName:kind==='experience'?experienceAudioName||undefined:undefined })
+    setShowComposer(false); setEditingId(null); setEditingDraftId(null); setTitle(''); setBody(''); setPrivacy('private'); setMemoryTags(''); setAttachCollection(''); setExperiencePhotos([]); setExperienceAudio(''); setExperienceAudioName(''); setExperienceMediaError(''); setEntryDate(new Date().toISOString().slice(0,10)); await refresh()
   }
   async function publishDraft(draft:Draft) {
     await saveEntry({ id:draft.id, kind:draft.kind, title:draft.title || 'Untitled', body:draft.body, createdAt:draft.createdAt, privacy:draft.privacy, collectionId:draft.collectionId, tags:draft.tags })
@@ -307,9 +313,9 @@ function App() {
     const localDate = new Date(entry.createdAt)
     localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset())
     setEntryDate(localDate.toISOString().slice(0, 10))
-    setEditingId(entry.id); setKind(entry.kind); setTitle(entry.title); setBody(entry.body); setPrivacy(entry.privacy); setMemoryTags((entry.tags || []).join(', ')); setAttachCollection(entry.collectionId || ''); setShowComposer(true)
+    setEditingId(entry.id); setKind(entry.kind); setTitle(entry.title); setBody(entry.body); setPrivacy(entry.privacy); setMemoryTags((entry.tags || []).join(', ')); setAttachCollection(entry.collectionId || ''); setExperiencePhotos(entry.photos||[]); setExperienceAudio(entry.audioData||''); setExperienceAudioName(entry.audioName||''); setExperienceMediaError(''); setShowComposer(true)
   }
-  function closeComposer() { setShowComposer(false); setEditingId(null); setEditingDraftId(null); setTitle(''); setBody(''); setPrivacy('private'); setMemoryTags(''); setAttachCollection(''); setEntryDate(new Date().toISOString().slice(0, 10)) }
+  function closeComposer() { setShowComposer(false); setEditingId(null); setEditingDraftId(null); setTitle(''); setBody(''); setPrivacy('private'); setMemoryTags(''); setAttachCollection(''); setExperiencePhotos([]); setExperienceAudio(''); setExperienceAudioName(''); setExperienceMediaError(''); setEntryDate(new Date().toISOString().slice(0, 10)) }
   async function saveMood() { if (!selectedMood) return; await saveMoodCheckin({id:crypto.randomUUID(),mood:selectedMood,note:moodNote.trim()||undefined,createdAt:new Date().toISOString()}); setMoodNote(''); setSelectedMood(''); setSanctuaryMessage('Your check-in has been saved on this device.'); await refresh() }
   async function saveQuietNote() { const text=quietText.trim(); if(!text)return; await saveQuietMoment({id:crypto.randomUUID(),text,createdAt:new Date().toISOString()}); setQuietText(''); setSanctuaryMessage('Your quiet moment has been saved on this device.'); await refresh() }
   async function togglePinned(entry: Entry) { if (!entry.pinned && entries.filter(item => item.kind === 'memory' && item.pinned).length >= 5) { setPinNotice('You can keep up to five memories pinned. Unpin one to make room.'); return } setPinNotice(''); await saveEntry({ ...entry, pinned: !entry.pinned }); await refresh() }
