@@ -213,13 +213,22 @@ function App() {
   const relatedUniverseEntries = selectedUniverseEntry ? entries.filter(e => getConnectionDetails(e).score > 0).sort((a,b) => getConnectionDetails(b).score - getConnectionDetails(a).score || b.createdAt.localeCompare(a.createdAt)) : []
   const universeFocusIds = new Set([selectedUniverseId, ...relatedUniverseEntries.map(e => e.id)].filter(Boolean))
   const getUniversePosition = (entry: Entry) => {
-    const siblings = universeEntries.filter(item => item.kind === entry.kind)
+    // Place entries into deterministic tag/collection neighborhoods so clusters
+    // emerge from the user's archive instead of arbitrary type-only islands.
+    const tags = (entry.tags || []).map(tag => tag.trim().toLowerCase()).filter(Boolean).sort()
+    const clusterKey = tags[0] || entry.collectionId || entry.kind
+    const hash = (value: string) => Array.from(value).reduce((acc, char) => (acc * 31 + char.charCodeAt(0)) >>> 0, 7)
+    const seed = hash(clusterKey)
+    const centerX = 18 + (seed % 6500) / 100
+    const centerY = 20 + ((seed >>> 7) % 6000) / 100
+    const siblings = universeEntries.filter(item => {
+      const itemTags = (item.tags || []).map(tag => tag.trim().toLowerCase()).filter(Boolean).sort()
+      return (itemTags[0] || item.collectionId || item.kind) === clusterKey
+    }).sort((a,b) => a.id.localeCompare(b.id))
     const index = Math.max(0, siblings.findIndex(item => item.id === entry.id))
-    const centers: Record<string,[number,number]> = { memory:[25,39], reflection:[74,34], experience:[52,77] }
-    const center = centers[entry.kind] || [50,50]
-    const angle = index * 2.399963 + (entry.kind === 'reflection' ? 1.05 : entry.kind === 'experience' ? 2.1 : 0)
-    const radius = 7 + Math.min(19, Math.sqrt(index) * 5.4)
-    return [Math.max(5,Math.min(95,center[0] + Math.cos(angle) * radius)), Math.max(7,Math.min(93,center[1] + Math.sin(angle) * radius))]
+    const angle = index * 2.399963 + (seed % 628) / 100
+    const radius = 4 + Math.min(17, Math.sqrt(index) * 4.2)
+    return [Math.max(5,Math.min(95,centerX + Math.cos(angle) * radius)), Math.max(7,Math.min(93,centerY + Math.sin(angle) * radius))]
   }
   const universeGraphNodes = universeEntries.slice(0,80)
   const universeGraphEdges = universeGraphNodes.flatMap((entry,index) => universeGraphNodes.slice(index+1).filter(other => getPairConnectionDetails(entry,other).score > 0).map(other => ({ a:entry, b:other, score:getPairConnectionDetails(entry,other).score })))
