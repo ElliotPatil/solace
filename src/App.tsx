@@ -189,7 +189,7 @@ function App() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     if (!q) return entries
-    const terms = q.split(/\\s+/).filter(Boolean)
+    const terms = q.split(/\s+/).filter(Boolean)
     return entries.map(entry => {
       const title = (entry.title || '').toLowerCase()
       const body = (entry.body || '').toLowerCase()
