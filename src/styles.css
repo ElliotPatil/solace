@@ -691,3 +691,28 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .experience-audio-player strong{font-size:13px;color:#dfe2e7;font-weight:500}
 .experience-audio-player audio{width:100%}
 @media(max-width:600px){.experience-photo-gallery{grid-template-columns:1fr}.experience-photo-gallery img{max-height:none}.experience-media-editor{padding:14px}}
+
+/* A Moment to Keep — quiet, cinematic composer refresh */
+.composer-v2{position:relative;overflow:auto;max-height:min(88vh,900px);border-radius:22px;padding:clamp(20px,4vw,34px);background:radial-gradient(ellipse at 92% 0%,rgba(157,178,208,.11),transparent 34%),linear-gradient(155deg,#141a23 0%,#0d1118 65%);border:1px solid rgba(206,220,240,.13);box-shadow:0 32px 100px rgba(0,0,0,.55);scrollbar-width:thin;scrollbar-color:#333b47 transparent}
+.composer-v2:before{content:"";display:block;width:48px;height:2px;border-radius:10px;background:var(--accent);opacity:.8;margin-bottom:24px}
+.composer-v2 .composer-top{align-items:flex-start;margin-bottom:4px}
+.composer-v2 .eyebrow{letter-spacing:.22em;font-size:9px;color:#a8b5c7}
+.composer-v2 h2{font-size:clamp(30px,5vw,38px);line-height:1.08;margin:12px 0 24px;max-width:380px;color:#f1f0eb}
+.composer-v2 .kind-tabs{padding:4px;background:rgba(255,255,255,.035);border:1px solid rgba(220,230,244,.08);border-radius:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:22px}
+.composer-v2 .kind-tabs button{border-radius:9px;padding:10px 6px;background:transparent;color:#8c96a6;font-size:11px;letter-spacing:.02em;transition:all .18s ease}
+.composer-v2 .kind-tabs button.selected{background:rgba(182,198,220,.1);border-color:rgba(182,198,220,.16);color:#e6edf7;box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+.composer-v2 .composer-title{font-family:'Instrument Serif',serif;font-size:24px;padding:17px 0;border-bottom-color:rgba(210,220,235,.12);color:#eee}
+.composer-v2 .composer-title::placeholder{font-family:'Instrument Serif',serif;font-size:22px;color:#566071}
+.composer-v2 textarea{min-height:150px;padding:18px 0;background:linear-gradient(180deg,rgba(255,255,255,.012),transparent);border-bottom-color:rgba(210,220,235,.12);font-size:14px;color:#d9dee7}
+.composer-v2 .privacy-select{font-size:11px;color:#a1adbd;gap:9px;margin-top:20px}
+.composer-v2 .privacy-select input[type=date],.composer-v2 .privacy-select select{border-radius:10px;background:rgba(255,255,255,.035);border:1px solid rgba(210,220,235,.12);padding:11px 12px;color:#dce3ed;font-size:12px;min-height:42px}
+.composer-v2 .experience-media-editor{border-radius:15px;background:rgba(255,255,255,.025);border-color:rgba(210,220,235,.11);padding:15px}
+.composer-v2 .experience-upload-label{border-radius:10px;background:rgba(255,255,255,.025);border-color:rgba(210,220,235,.12)}
+.composer-v2 .composer-footer{align-items:flex-start;gap:14px;flex-wrap:wrap;border-top:1px solid rgba(210,220,235,.1);padding-top:18px;margin-top:25px}
+.composer-v2 .composer-footer span{font-size:10px;white-space:nowrap}
+.composer-v2 .composer-save-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.composer-v2 .composer-save-actions button{border-radius:999px;padding:10px 15px}
+.composer-v2 .icon-button{border-radius:50%;background:rgba(255,255,255,.04);border:1px solid rgba(210,220,235,.1);width:36px;height:36px}
+.composer-v2 input:focus,.composer-v2 textarea:focus{border-color:rgba(174,190,212,.35)}
+@media(max-width:650px){.modal-backdrop{padding:10px;align-items:end}.composer-v2{width:100%;max-height:92dvh;border-radius:22px 22px 16px 16px;padding:22px 18px calc(18px + env(safe-area-inset-bottom));}.composer-v2:before{margin-bottom:19px}.composer-v2 h2{font-size:32px;margin-bottom:19px}.composer-v2 textarea{min-height:135px}.composer-v2 .composer-footer{display:flex;flex-direction:column;align-items:stretch}.composer-v2 .composer-save-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}.composer-v2 .composer-save-actions button{justify-content:center;min-height:44px}.composer-v2 .composer-footer span{justify-content:center}}
+@media(prefers-reduced-motion:reduce){.composer-v2,.composer-v2 *{animation:none!important;transition:none!important}}
