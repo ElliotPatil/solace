@@ -738,3 +738,11 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .soul-pattern-combo-list small{font-size:10px;color:var(--muted)}
 .resurface-dismiss{margin:0 0 12px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);padding:6px 10px;font-size:11px;cursor:pointer}
 .resurface-dismiss:hover{color:var(--silver);border-color:rgba(210,216,228,.22)}
+
+/* Universe 2.0 visual polish — layered depth and calmer star emphasis */
+.universe-map.enhanced-map{background:radial-gradient(ellipse at 52% 44%,rgba(34,49,72,.42),transparent 52%),radial-gradient(ellipse at 22% 78%,rgba(63,74,100,.12),transparent 40%),radial-gradient(ellipse at 50% 50%,#151e2a 0%,#090e16 66%,#05080d 100%)}
+.universe-map.enhanced-map .map-starscape{opacity:.62;background-image:radial-gradient(1px 1px at 13% 28%,#d5dfef 98%,transparent),radial-gradient(1px 1px at 76% 18%,#d5dfef 98%,transparent),radial-gradient(1px 1px at 64% 72%,#d5dfef 98%,transparent),radial-gradient(1px 1px at 25% 83%,#d5dfef 98%,transparent),radial-gradient(1px 1px at 91% 48%,#d5dfef 98%,transparent),radial-gradient(1px 1px at 42% 8%,#d5dfef 98%,transparent),radial-gradient(1px 1px at 7% 62%,#aebed8 98%,transparent),radial-gradient(1px 1px at 82% 88%,#aebed8 98%,transparent),radial-gradient(1px 1px at 54% 35%,#aebed8 98%,transparent)}
+.universe-map.enhanced-map .universe-star span{box-shadow:0 0 9px rgba(188,211,244,.72),0 0 20px rgba(141,173,218,.16)}
+.universe-map.enhanced-map .universe-star.chosen span{box-shadow:0 0 13px 5px rgba(194,215,245,.76),0 0 36px rgba(172,200,238,.58)}
+.universe-map.enhanced-map .universe-links line{stroke:rgba(171,194,226,.38);stroke-dasharray:.7 1.8;transition:opacity .25s}
+@media(prefers-reduced-motion:reduce){.universe-map.enhanced-map .universe-links line{transition:none}}
