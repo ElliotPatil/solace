@@ -728,3 +728,13 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
   .universe-nebula i{animation:none!important}
   .universe-world,.universe-star,.universe-links line{transition:none!important}
 }
+
+/* Pattern engine v1: recurring tag combinations */
+.soul-pattern-combos{margin-top:18px;padding:18px 20px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.018)}
+.soul-pattern-combos>p{font-size:13px;color:var(--muted);margin:8px 0 14px}
+.soul-pattern-combo-list{display:flex;flex-wrap:wrap;gap:10px}
+.soul-pattern-combo-list>span{display:flex;flex-direction:column;gap:5px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025)}
+.soul-pattern-combo-list strong{font-size:12px;font-weight:500;letter-spacing:.02em}
+.soul-pattern-combo-list small{font-size:10px;color:var(--muted)}
+.resurface-dismiss{margin:0 0 12px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);padding:6px 10px;font-size:11px;cursor:pointer}
+.resurface-dismiss:hover{color:var(--silver);border-color:rgba(210,216,228,.22)}
