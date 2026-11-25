@@ -598,3 +598,13 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .universe-view-controls button:hover{background:rgba(190,207,232,.1);color:#fff}
 .universe-map-fullscreen .universe-view-controls{right:22px;bottom:68px}
 @media(max-width:650px){.universe-view-controls{right:10px;bottom:48px}.universe-map-fullscreen .universe-view-controls{right:14px;bottom:58px}}
+
+/* Universe local-neighborhood controls */
+.universe-focus-toggle{position:absolute;right:112px;top:14px;z-index:5;display:flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid rgba(190,204,226,.18);background:rgba(9,13,19,.72);backdrop-filter:blur(8px);color:#8592a5;border-radius:3px;font-size:9px;letter-spacing:.35px;transition:all .2s}
+.universe-focus-toggle:hover:not(:disabled),.universe-focus-toggle.active{border-color:rgba(191,211,239,.38);color:#d8e3f2;background:rgba(23,32,45,.85)}
+.universe-focus-toggle:disabled{opacity:.38;cursor:not-allowed}
+.universe-focus-mode .universe-star:not(.chosen){opacity:.72}
+.universe-focus-mode .universe-links line:not(.is-focused){opacity:0!important}
+.universe-star,.universe-links line{transition:opacity .24s ease,transform .22s ease,background .22s ease}
+@media(max-width:650px){.universe-focus-toggle{right:105px;top:12px;padding:7px 8px;font-size:8px}.universe-expand{top:12px}}
+@media(prefers-reduced-motion:reduce){.universe-focus-toggle,.universe-star,.universe-links line{transition:none}}
