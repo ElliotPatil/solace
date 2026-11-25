@@ -608,3 +608,22 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .universe-star,.universe-links line{transition:opacity .24s ease,transform .22s ease,background .22s ease}
 @media(max-width:650px){.universe-focus-toggle{right:105px;top:12px;padding:7px 8px;font-size:8px}.universe-expand{top:12px}}
 @media(prefers-reduced-motion:reduce){.universe-focus-toggle,.universe-star,.universe-links line{transition:none}}
+
+
+/* Solace five-system refinement pass */
+.universe-star{filter:drop-shadow(0 0 5px rgba(142,174,224,.12))}
+.universe-star.chosen{filter:drop-shadow(0 0 12px rgba(184,208,242,.3))}
+.universe-map.enhanced-map:before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(164,187,224,.18) 1px,transparent 1.5px);background-size:47px 47px;opacity:.22;mask-image:linear-gradient(135deg,#000,transparent 80%)}
+.memory-detail-date-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.memory-detail-navigation{display:flex;align-items:center;gap:9px;color:#727e91;font-size:9px;letter-spacing:.35px}
+.memory-detail-navigation button{border:1px solid rgba(186,204,230,.15);background:rgba(190,207,231,.035);padding:7px 9px;color:#a9b5c7;font:inherit;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.memory-detail-navigation button:hover:not(:disabled){background:rgba(190,207,231,.09);border-color:rgba(186,204,230,.28);color:#e5edf8}
+.memory-detail-navigation button:disabled{opacity:.28;cursor:not-allowed}
+.search-results-preview button{transition:background .18s,transform .18s}
+.search-results-preview button:hover{transform:translateX(2px)}
+.memory-calendar{scroll-margin-top:30px}
+.memory-calendar-results{animation:solace-soft-in .22s ease both}
+.memory-day{scroll-margin-top:24px}
+@keyframes solace-soft-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:650px){.memory-detail-date-row{align-items:flex-start;gap:10px}.memory-detail-navigation{width:100%;justify-content:space-between}.memory-detail-navigation button{padding:8px 10px}.memory-detail-navigation span{flex:1;text-align:center}}
+@media(prefers-reduced-motion:reduce){.memory-calendar-results{animation:none!important}.search-results-preview button{transition:none!important}}
