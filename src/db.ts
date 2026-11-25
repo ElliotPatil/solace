@@ -1,8 +1,8 @@
 export type EntryKind = 'memory' | 'reflection' | 'experience'
 export type Privacy = 'private' | 'ai-readable' | 'shareable'
-export interface Entry { id:string; kind:EntryKind; title:string; body:string; createdAt:string; privacy:Privacy; collectionId?:string; pinned?:boolean; tags?:string[] }
+export interface Entry { id:string; kind:EntryKind; title:string; body:string; createdAt:string; privacy:Privacy; collectionId?:string; pinned?:boolean; tags?:string[]; photos?:string[]; audioData?:string; audioName?:string }
 export interface Collection { id:string; name:string; description:string; createdAt:string }
-export interface Draft { id:string; kind:EntryKind; title:string; body:string; createdAt:string; updatedAt:string; privacy:Privacy; collectionId?:string; tags?:string[] }
+export interface Draft { id:string; kind:EntryKind; title:string; body:string; createdAt:string; updatedAt:string; privacy:Privacy; collectionId?:string; tags?:string[]; photos?:string[]; audioData?:string; audioName?:string }
 export type MoodValue = 'Heavy' | 'Low' | 'Steady' | 'Good' | 'Bright'
 export interface MoodCheckin { id:string; mood:MoodValue; note?:string; createdAt:string }
 export interface QuietMoment { id:string; text:string; createdAt:string }
