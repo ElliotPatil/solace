@@ -4,7 +4,7 @@ import type { Skill, Hobby, SkillCategory, HobbyCategory } from './types'
 import MediaUploader from '../../components/media/MediaUploader'
 import CustomSelect from '../../components/ui/CustomSelect'
 import TagInput from '../../components/ui/TagInput'
-import { Plus, Sparkles, Star, Lightbulb, Undo2, Redo2 } from 'lucide-react'
+import { Plus, Sparkles, Star, Lightbulb, Undo2, Redo2, X, Trash2 } from 'lucide-react'
 
 const skillCategories: SkillCategory[] = ['technology','creative','business','communication','academic','other']
 const hobbyCategories: HobbyCategory[] = ['sports','music','creative','learning','entertainment','other']
@@ -33,6 +33,7 @@ export default function SkillsHobbiesPage() {
   const [tagsText,setTagsText] = useState('')
   const [category,setCategory] = useState<string>('technology')
   const [error,setError] = useState('')
+  const [deleteTarget,setDeleteTarget] = useState<{type:'skills'|'hobbies';item:Skill|Hobby}|null>(null)
   const [isSeeding,setIsSeeding] = useState(false)
   const [deletedHistory,setDeletedHistory] = useState<Array<{type:'skills'|'hobbies';item:Skill|Hobby}>>([])
   const [redoHistory,setRedoHistory] = useState<Array<{type:'skills'|'hobbies';item:Skill|Hobby}>>([])
@@ -81,12 +82,12 @@ export default function SkillsHobbiesPage() {
       setName('');setDescription('');setTagsText('');setError('');await refresh()
     } catch {setError('Could not save this item on your device.')}
   }
-  async function removeItem(item:Skill|Hobby) {
-    const label=tab==='skills'?'skill':'hobby'
-    if(!window.confirm('Delete '+label+' "'+item.name+'"?')) return
-    if(!window.confirm('Are you absolutely sure? This '+label+' will be removed.')) return
-    if(tab==='skills') await deleteSkill(item.id); else await deleteHobby(item.id)
-    setDeletedHistory(previous=>[...previous,{type:tab,item}]);setRedoHistory([]);await refresh()
+  async function removeItem(item:Skill|Hobby) { setDeleteTarget({type:tab,item}) }
+  async function confirmDelete() {
+    if(!deleteTarget)return
+    const {type,item}=deleteTarget
+    if(type==='skills')await deleteSkill(item.id);else await deleteHobby(item.id)
+    setDeletedHistory(previous=>[...previous,{type,item}]);setRedoHistory([]);setDeleteTarget(null);await refresh()
   }
   async function undoDelete() {
     const action=deletedHistory[deletedHistory.length-1];if(!action)return
@@ -122,6 +123,7 @@ export default function SkillsHobbiesPage() {
     </form>
     <div className="interest-list-heading"><div><span className="eyebrow muted">{tab.toUpperCase()} · {items.length}</span><h2>{tab==='skills'?'Skills you are building':'Hobbies you enjoy'}</h2></div><div className="interest-history-actions"><button type="button" onClick={()=>void undoDelete()} disabled={!deletedHistory.length} aria-label="Undo" title="Undo"><Undo2 size={16}/></button><button type="button" onClick={()=>void redoDelete()} disabled={!redoHistory.length} aria-label="Redo" title="Redo"><Redo2 size={16}/></button></div></div>
     {items.length===0?<div className="interest-empty"><Lightbulb size={22}/><strong>{tab==='skills'?'Start with the skills you are already developing.':'Your list starts with one thing.'}</strong><span>{tab==='skills'?'Solace can add a starter set based on the projects and experiments you have worked on. You can edit or remove any item afterwards.':'Add something you enjoy, or something you are curious to explore.'}</span>{tab==='skills'&&<button className="new-button" type="button" onClick={()=>void addStarterSkills()} disabled={isSeeding}>{isSeeding?'Adding skills…':'Add my starter skills'} <Plus size={14}/></button>}</div>:<div className="interest-grid">{items.map(item=><article className="interest-card interest-card-media" key={item.id}><MediaUploader banner={item.banner} images={[]} onChange={async(banner)=>{const updated={...item,banner,showcaseImages:[],updatedAt:stamp()};if(tab==='skills')await saveSkill(updated as Skill);else await saveHobby(updated as Hobby);await refresh()}} onDeleteItem={()=>void removeItem(item)} title="Visual showcase"/><div className="interest-card-content"><div className="interest-card-top"><span>{item.category.replace('_',' ')}</span></div><h3>{item.name}</h3><p>{item.description||'A little part of what makes you, you.'}</p><div className="interest-card-foot">ADDED {new Date(item.createdAt).toLocaleDateString()}</div></div></article>)}</div>}
+    {deleteTarget&&<div className="interest-delete-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)setDeleteTarget(null)}}><section className="interest-delete-dialog" role="alertdialog" aria-modal="true" aria-labelledby="interest-delete-title"><div className="interest-delete-icon"><Trash2 size={18}/></div><button type="button" className="interest-delete-close" onClick={()=>setDeleteTarget(null)} aria-label="Close"><X size={17}/></button><span className="eyebrow muted">REMOVE FROM YOUR SPACE</span><h2 id="interest-delete-title">Delete this {deleteTarget.type==='skills'?'skill':'hobby'}?</h2><p><strong>{deleteTarget.item.name}</strong> will be removed from your list. You can restore it with Undo afterwards.</p><div className="interest-delete-actions"><button type="button" className="interest-delete-cancel" onClick={()=>setDeleteTarget(null)}>Keep it</button><button type="button" className="interest-delete-confirm" onClick={()=>void confirmDelete()}><Trash2 size={14}/> Delete</button></div></section></div>}
     <section className="interest-insights"><div className="interest-insight-title"><Sparkles size={16}/><div><span className="eyebrow muted">EARLY PATTERNS</span><h2>Connections & common ground</h2></div></div>{crossConnections.length>0?<div className="interest-connection-list">{crossConnections.map((connection,index)=><div className="interest-connection" key={connection.skill+'-'+connection.hobby+'-'+index}><strong>{connection.skill} <span>↔</span> {connection.hobby}</strong><p>Shared themes: {connection.tags.join(', ')}</p></div>)}</div>:allTags.length?<p>These themes appear across more than one interest: <strong>{allTags.join(', ')}</strong>. Add matching tags to a skill and a hobby to reveal their direct connection.</p>:<p>Add tags to your skills and hobbies. Solace will surface real overlaps from what you enter — it won't invent strengths or conclusions.</p>}</section>
   </div>
 }
