@@ -1019,3 +1019,14 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .interest-delete-cancel{border:1px solid rgba(220,230,245,.16);background:transparent;color:#c1c9d5}
 .interest-delete-confirm{border:1px solid #8d4848;background:#a64e4e;color:#fff}
 @media(max-width:640px){.interest-card-media{flex-basis:86vw;aspect-ratio:1.02;min-height:0}.interest-card-media>.interest-card-content{height:100%;min-height:0}.banner-crop-dialog{padding:16px}.banner-crop-viewport{max-height:48vh}}
+
+/* What's Up — separated, swipeable movie and TV shelves */
+.watch-shelves{display:grid;gap:28px;min-width:0}
+.watch-shelf{min-width:0}
+.watch-shelf-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 12px}
+.watch-shelf-heading h3{font-family:'Instrument Serif',serif;font-size:23px;font-weight:400;color:var(--text,#e9edf4);margin:0}
+.watch-shelf-heading span{font-size:10px;color:var(--muted,#8993a3)}
+.watch-shelf-track{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;padding:2px 2px 12px;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.watch-shelf-track::-webkit-scrollbar{display:none}
+.watch-shelf-track>.watch-library-card{flex:0 0 min(78vw,330px);width:min(78vw,330px);min-width:0;scroll-snap-align:start}
+@media(min-width:900px){.watch-shelf-track>.watch-library-card{flex-basis:300px;width:300px}}
