@@ -944,3 +944,26 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .banner-crop-footer{justify-content:flex-end}
 .banner-crop-cancel{border:1px solid rgba(220,230,245,.15);background:transparent;color:#b5bfcd;border-radius:5px;padding:10px 14px;font-size:11px}
 @media(max-width:640px){.interest-grid{margin-right:-18px;padding-right:18px}.interest-card-media{flex-basis:86vw}.interest-card-media .media-banner,.interest-card-media .media-banner-add{height:158px}.banner-crop-dialog{padding:16px}.banner-crop-viewport{height:205px}}
+
+
+/* Full-card banners: preserve the complete original image, never crop or stretch */
+.interest-card-media{isolation:isolate;min-height:350px;background:#0d1119}
+.interest-card-media>.media-uploader{position:absolute;inset:0;z-index:0;display:block;margin:0;pointer-events:none}
+.interest-card-media .media-uploader-heading{display:none}
+.interest-card-media .media-banner-slot{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.interest-card-media .media-banner{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;background:radial-gradient(ellipse at center,rgba(91,111,139,.18),transparent 72%),#0d1119}
+.interest-card-media .media-banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;opacity:.82}
+.interest-card-media .media-banner:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,11,17,.18) 0%,rgba(8,11,17,.38) 38%,rgba(8,11,17,.88) 100%);pointer-events:none}
+.interest-card-media .media-banner-add{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;background:radial-gradient(ellipse at 50% 30%,rgba(145,163,190,.12),transparent 68%),linear-gradient(145deg,#171f2b,#0b1018);pointer-events:auto}
+.interest-card-media .media-banner-actions{position:absolute;z-index:3;right:12px;top:12px;display:flex;gap:6px;pointer-events:auto}
+.interest-card-media .media-banner-actions button,.interest-card-media .media-banner-actions label{display:flex;align-items:center;justify-content:center;gap:5px;width:auto;height:30px;padding:0 10px;border-radius:8px;background:rgba(7,10,15,.76);border:1px solid rgba(255,255,255,.17);color:#edf1f6;font-size:10px;backdrop-filter:blur(8px);cursor:pointer}
+.interest-card-media .media-banner-actions label{position:relative}
+.interest-card-media .media-banner-actions input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.interest-card-media>.interest-card-content{position:relative;z-index:1;display:flex;flex-direction:column;min-height:350px;margin:0;padding:22px 19px 20px;background:linear-gradient(180deg,rgba(9,13,20,.28) 0%,rgba(9,13,20,.48) 35%,rgba(9,13,20,.94) 100%);pointer-events:none}
+.interest-card-media .interest-card-content button{pointer-events:auto}
+.interest-card-media .interest-card-content .interest-card-top{padding-top:0}
+.interest-card-media .interest-card-content h3{margin-top:auto;padding-top:105px;text-shadow:0 2px 18px rgba(0,0,0,.55)}
+.interest-card-media .interest-card-content p{color:#c0c9d6;text-shadow:0 1px 12px rgba(0,0,0,.55)}
+.interest-card-media .interest-card-content .interest-card-foot{margin-top:auto;padding-top:8px}
+.interest-card-media .media-gallery{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;padding:0 18px 16px;background:transparent;pointer-events:auto}
+@media(max-width:640px){.interest-card-media{min-height:330px}.interest-card-media>.interest-card-content{min-height:330px;padding:19px 17px 18px}.interest-card-media .interest-card-content h3{padding-top:85px}.interest-card-media .media-gallery{padding:0 16px 14px}}
