@@ -1,26 +1,118 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Each authenticated user may access only their own profile document.
-    match /users/{userId} {
-      allow read, delete: if request.auth != null && request.auth.uid == userId;
+    function signedInAs(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
 
-      allow create: if request.auth != null
-        && request.auth.uid == userId
-        && request.resource.data.uid == userId
+    // Account profile metadata only. A user cannot change their UID or createdAt.
+    match /users/{uid} {
+      allow read, delete: if signedInAs(uid);
+
+      allow create: if signedInAs(uid)
+        && request.resource.data.uid == uid
         && request.resource.data.keys().hasOnly([
+          'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'lastLoginAt', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
           'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'lastLoginAt', 'updatedAt'
         ]);
 
-      allow update: if request.auth != null
-        && request.auth.uid == userId
-        && request.resource.data.uid == userId
+      allow update: if signedInAs(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.keys().hasOnly([
+          'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'lastLoginAt', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'uid', 'displayName', 'email', 'photoURL', 'createdAt', 'lastLoginAt', 'updatedAt'
+        ])
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-          'displayName', 'email', 'photoURL', 'updatedAt'
+          'displayName', 'email', 'photoURL', 'lastLoginAt', 'updatedAt'
         ]);
+
+      // Memories, reflections, experiences. Media binaries are intentionally excluded.
+      match /entries/{entryId} {
+        function validEntry(data) {
+          return data.keys().hasAll(['id', 'kind', 'title', 'body', 'createdAt', 'privacy'])
+            && data.keys().hasOnly(['id', 'kind', 'title', 'body', 'createdAt', 'privacy', 'collectionId', 'pinned', 'tags'])
+            && data.id == entryId
+            && data.kind in ['memory', 'reflection', 'experience']
+            && data.title is string && data.title.size() <= 200
+            && data.body is string && data.body.size() <= 10000
+            && data.createdAt is string && data.createdAt.size() <= 64
+            && data.privacy in ['private', 'ai-readable', 'shareable']
+            && (!('collectionId' in data) || (data.collectionId is string && data.collectionId.size() <= 128))
+            && (!('pinned' in data) || data.pinned is bool)
+            && (!('tags' in data) || (data.tags is list && data.tags.size() <= 30));
+        }
+        allow read: if signedInAs(uid);
+        allow create, update: if signedInAs(uid) && validEntry(request.resource.data);
+        allow delete: if signedInAs(uid);
+      }
+
+      match /collections/{collectionId} {
+        function validCollection(data) {
+          return data.keys().hasAll(['id', 'name', 'description', 'createdAt'])
+            && data.keys().hasOnly(['id', 'name', 'description', 'createdAt'])
+            && data.id == collectionId
+            && data.name is string && data.name.size() <= 100
+            && data.description is string && data.description.size() <= 1000
+            && data.createdAt is string && data.createdAt.size() <= 64;
+        }
+        allow read: if signedInAs(uid);
+        allow create, update: if signedInAs(uid) && validCollection(request.resource.data);
+        allow delete: if signedInAs(uid);
+      }
+
+      match /drafts/{draftId} {
+        function validDraft(data) {
+          return data.keys().hasAll(['id', 'kind', 'title', 'body', 'createdAt', 'updatedAt', 'privacy'])
+            && data.keys().hasOnly(['id', 'kind', 'title', 'body', 'createdAt', 'updatedAt', 'privacy', 'collectionId', 'tags'])
+            && data.id == draftId
+            && data.kind in ['memory', 'reflection', 'experience']
+            && data.title is string && data.title.size() <= 200
+            && data.body is string && data.body.size() <= 10000
+            && data.createdAt is string && data.createdAt.size() <= 64
+            && data.updatedAt is string && data.updatedAt.size() <= 64
+            && data.privacy in ['private', 'ai-readable', 'shareable']
+            && (!('collectionId' in data) || (data.collectionId is string && data.collectionId.size() <= 128))
+            && (!('tags' in data) || (data.tags is list && data.tags.size() <= 30));
+        }
+        allow read: if signedInAs(uid);
+        allow create, update: if signedInAs(uid) && validDraft(request.resource.data);
+        allow delete: if signedInAs(uid);
+      }
+
+      match /moodCheckins/{checkinId} {
+        function validMood(data) {
+          return data.keys().hasAll(['id', 'mood', 'createdAt'])
+            && data.keys().hasOnly(['id', 'mood', 'note', 'createdAt'])
+            && data.id == checkinId
+            && data.mood in ['Heavy', 'Low', 'Steady', 'Good', 'Bright']
+            && data.createdAt is string && data.createdAt.size() <= 64
+            && (!('note' in data) || (data.note is string && data.note.size() <= 1000));
+        }
+        allow read: if signedInAs(uid);
+        allow create, update: if signedInAs(uid) && validMood(request.resource.data);
+        allow delete: if signedInAs(uid);
+      }
+
+      match /quietMoments/{momentId} {
+        function validQuietMoment(data) {
+          return data.keys().hasAll(['id', 'text', 'createdAt'])
+            && data.keys().hasOnly(['id', 'text', 'createdAt'])
+            && data.id == momentId
+            && data.text is string && data.text.size() <= 2000
+            && data.createdAt is string && data.createdAt.size() <= 64;
+        }
+        allow read: if signedInAs(uid);
+        allow create, update: if signedInAs(uid) && validQuietMoment(request.resource.data);
+        allow delete: if signedInAs(uid);
+      }
     }
 
-    // Deny access to every other collection until explicitly secured.
+    // Default deny for all paths not explicitly covered above.
     match /{document=**} {
       allow read, write: if false;
     }
