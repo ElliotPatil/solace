@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { getSkills, saveSkill, deleteSkill, getHobbies, saveHobby, deleteHobby } from '../../db'
 import type { Skill, Hobby, SkillCategory, HobbyCategory } from './types'
 import MediaUploader from '../../components/media/MediaUploader'
+import CustomSelect from '../../components/ui/CustomSelect'
 import { Plus, Trash2, Sparkles, Star, Lightbulb } from 'lucide-react'
 
 const skillCategories: SkillCategory[] = ['technology','creative','business','communication','academic','other']
@@ -57,7 +58,7 @@ export default function SkillsHobbiesPage() {
     <div className="interest-tabs"><button className={tab==='skills'?'selected':''} onClick={()=>setTab('skills')}><Star size={14}/> Skills <span>{skills.length}</span></button><button className={tab==='hobbies'?'selected':''} onClick={()=>setTab('hobbies')}>Hobbies <span>{hobbies.length}</span></button></div>
     <form className="interest-form" onSubmit={addItem}>
       <div className="interest-form-heading"><Plus size={16}/><strong>Add a {tab==='skills'?'skill':'hobby'}</strong></div>
-      <div className="interest-form-grid"><label>Name<input value={name} onChange={e=>setName(e.target.value)} placeholder={tab==='skills'?'e.g. Web development':'e.g. Chess'} maxLength={70}/></label><label>Category<select value={category} onChange={e=>setCategory(e.target.value)}>{(tab==='skills'?skillCategories:hobbyCategories).map(value=><option key={value} value={value}>{value.replace('_',' ')}</option>)}</select></label></div>
+      <div className="interest-form-grid"><label>Name<input value={name} onChange={e=>setName(e.target.value)} placeholder={tab==='skills'?'e.g. Web development':'e.g. Chess'} maxLength={70}/></label><label>Category<CustomSelect value={category} onChange={setCategory} options={(tab==='skills'?skillCategories:hobbyCategories).map(value=>({value,label:value.replace('_',' ')}))} /></label></div>
       <label>Description<textarea value={description} onChange={e=>setDescription(e.target.value)} rows={2} maxLength={280} placeholder="A little about this interest (optional)…"/></label><label>Tags<input value={tagsText} onChange={e=>setTagsText(e.target.value)} placeholder="e.g. creativity, problem-solving, music"/></label>
       <button className="new-button" type="submit" disabled={!name.trim()}>Save {tab==='skills'?'skill':'hobby'} <Plus size={14}/></button>
       {error&&<p className="interest-error">{error}</p>}
