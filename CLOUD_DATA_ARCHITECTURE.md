@@ -1,7 +1,7 @@
 # Solace Layer 2 — Secure Cloud Data Architecture
 
 ## Status
-Layer 2 planning and schema definition. No memories are uploaded or synced in this layer.
+Layer 2 schema definition and restrictive Firestore rules are committed to `main`. Rules deployment and emulator verification are still pending. No memories are uploaded or synced in this layer.
 
 ## Identity and ownership
 - Firebase Authentication UID is the canonical account ID.
@@ -67,7 +67,8 @@ IDs remain the local record IDs, allowing later sync to match records without du
 - Firestore records should hold media metadata and storage paths only.
 
 ## Layer 2 work sequence
-1. Document and review this data contract.
-2. Implement restrictive, per-collection Firestore rules and validate them with the Firestore Emulator or Rules Playground.
-3. Keep memory collection writes disabled in the app until local account isolation and sync safeguards are implemented.
-4. Review the rules, then deploy them deliberately.
+1. Document and review this data contract. (Committed)
+2. Implement restrictive, per-collection Firestore rules. (Committed; not yet emulator-tested)
+3. Validate rules with the Firestore Emulator or Rules Playground before deployment. (Pending)
+4. Keep memory collection writes disabled in the app until local account isolation and sync safeguards are implemented.
+5. Review and deploy the rules deliberately. (Pending)
