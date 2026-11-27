@@ -7,17 +7,26 @@ export type MoodValue = 'Heavy' | 'Low' | 'Steady' | 'Good' | 'Bright'
 export interface MoodCheckin { id:string; mood:MoodValue; note?:string; createdAt:string }
 export interface QuietMoment { id:string; text:string; createdAt:string }
 
-const DB_NAME='solace-local'
-const DB_VERSION=4
+const DB_BASE='solace-local'
+const DB_VERSION=5
 const ENTRIES='entries'
 const COLLECTIONS='collections'
 const DRAFTS='drafts'
 const MOODS='mood-checkins'
 const QUIET_MOMENTS='quiet-moments'
 
+// The guest database keeps legacy local records. Signed-in accounts get a separate
+// database name, preventing accidental cross-account access on shared devices.
+let activeAccountUid:string|null=null
+export function setAccountScope(uid:string|null):void {
+  activeAccountUid=uid
+}
+function databaseName():string {
+  return activeAccountUid ? `${DB_BASE}-user-${encodeURIComponent(activeAccountUid)}` : DB_BASE
+}
 function openDatabase():Promise<IDBDatabase>{
   return new Promise((resolve,reject)=>{
-    const request=indexedDB.open(DB_NAME,DB_VERSION)
+    const request=indexedDB.open(databaseName(),DB_VERSION)
     request.onupgradeneeded=()=>{
       const db=request.result
       if(!db.objectStoreNames.contains(ENTRIES)) db.createObjectStore(ENTRIES,{keyPath:'id'})
@@ -69,14 +78,12 @@ export async function deleteCollection(id:string):Promise<void>{
     tx.onabort=()=>{db.close();reject(tx.error)}
   })
 }
-
 export async function getDrafts():Promise<Draft[]>{
   const rows=await runRequest<Draft[]>(DRAFTS,'readonly',store=>store.getAll())
   return rows.sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt))
 }
 export async function saveDraft(draft:Draft):Promise<void>{await runRequest(DRAFTS,'readwrite',store=>store.put(draft))}
 export async function deleteDraft(id:string):Promise<void>{await runRequest(DRAFTS,'readwrite',store=>store.delete(id))}
-
 export async function getMoodCheckins():Promise<MoodCheckin[]>{const rows=await runRequest<MoodCheckin[]>(MOODS,'readonly',store=>store.getAll());return rows.sort((a,b)=>b.createdAt.localeCompare(a.createdAt))}
 export async function saveMoodCheckin(item:MoodCheckin):Promise<void>{await runRequest(MOODS,'readwrite',store=>store.put(item))}
 export async function getQuietMoments():Promise<QuietMoment[]>{const rows=await runRequest<QuietMoment[]>(QUIET_MOMENTS,'readonly',store=>store.getAll());return rows.sort((a,b)=>b.createdAt.localeCompare(a.createdAt))}
