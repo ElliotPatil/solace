@@ -13,7 +13,7 @@ export default function TagInput({value,onChange,placeholder='Add tags…',class
   const [active,setActive]=useState(0)
   const root=useRef<HTMLDivElement>(null)
   const current=value.split(',').pop()?.trim().replace(/^#/,'')||''
-  useEffect(()=>{let alive=true;getAllTags().then(items=>{if(alive)setTags(items)}).catch(()=>{});return()=>{alive=false}},[])
+  async function refreshTags(){try{setTags(await getAllTags())}catch{}}
   useEffect(()=>{
     const close=(event:PointerEvent)=>{if(root.current&&!root.current.contains(event.target as Node))setOpen(false)}
     document.addEventListener('pointerdown',close)
@@ -27,7 +27,7 @@ export default function TagInput({value,onChange,placeholder='Add tags…',class
     setOpen(false);setActive(0)
   }
   return <div className="tag-input-wrap" ref={root}>
-    <input className={className} value={value} placeholder={placeholder} onChange={event=>{onChange(event.target.value);setOpen(true);setActive(0)}} onFocus={()=>setOpen(true)} onKeyDown={event=>{
+    <input className={className} value={value} placeholder={placeholder} onChange={event=>{onChange(event.target.value);setOpen(true);setActive(0)}} onFocus={()=>{setOpen(true);void refreshTags()}} onKeyDown={event=>{
       if(!open||!suggestions.length)return
       if(event.key==='ArrowDown'){event.preventDefault();setActive(index=>(index+1)%suggestions.length)}
       else if(event.key==='ArrowUp'){event.preventDefault();setActive(index=>(index-1+suggestions.length)%suggestions.length)}
