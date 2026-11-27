@@ -1,74 +1,58 @@
-# Solace Layer 2 — Secure Cloud Data Architecture
+# Solace Cloud Data Architecture
 
 ## Status
-Layer 2 schema definition and restrictive Firestore rules are committed to `main`. Rules deployment and emulator verification are still pending. No memories are uploaded or synced in this layer.
+- Account profile resolver: implemented.
+- UID-scoped Firestore rules: implemented.
+- Firestore emulator security tests: implemented and passed in CI on 2026-11-27.
+- Local IndexedDB account partitioning: implemented on main (CI verification pending).
+- Cloud sync: intentionally not enabled.
+- Firebase rules deployment: pending credentials/owner approval.
+- Storage media uploads/rules: pending Firebase Storage setup and credentials.
+
+## Local account isolation
+The local database is now scoped by the authenticated Firebase UID:
+- Signed-out/guest records continue to use `solace-local`.
+- Signed-in records use `solace-local-user-{encoded UID}`.
+- Switching auth state selects the matching database and reloads data.
+- Legacy records are retained in the guest database and are not automatically attributed to any account; automatic migration could expose data to the wrong account.
 
 ## Identity and ownership
 - Firebase Authentication UID is the canonical account ID.
 - Cloud user data is nested under `users/{uid}`.
 - Client code must never choose a different user's UID for cloud paths.
-- Firestore security rules enforce `request.auth.uid == uid`; UI checks are not a security boundary.
+- Firestore rules enforce `request.auth.uid == uid`; UI checks are not a security boundary.
 
 ## Firestore structure
 ```
-users/{uid}                         # profile metadata (Layer 1)
+users/{uid}                         # profile metadata
 users/{uid}/entries/{entryId}        # memories, reflections, experiences
 users/{uid}/collections/{collectionId} # collection metadata
 users/{uid}/drafts/{draftId}         # draft records
-users/{uid}/moodCheckins/{checkinId} # mood check-in records
-users/{uid}/quietMoments/{momentId}   # quiet-moment records
+users/{uid}/moodCheckins/{checkinId} # mood check-ins
+users/{uid}/quietMoments/{momentId}   # quiet moments
 ```
 
-IDs remain the local record IDs, allowing later sync to match records without duplication.
+## Field mapping
+Entries require `id`, `kind`, `title`, `body`, `createdAt`, `privacy`; optional `collectionId`, `pinned`, and `tags`. Drafts similarly require their content, timestamps and privacy. Collections contain id/name/description/createdAt. Mood records contain id/mood/createdAt and optional note. Quiet moments contain id/text/createdAt.
+Local-only media payloads (`photos`, `audioData`, `audioName`) must not be written to Firestore. Media requires separate Firebase Storage upload and metadata handling.
 
-## Field mapping (based on src/db.ts)
+## Security principles
+1. Authenticate all private-data operations.
+2. Restrict reads and writes to the current UID's path.
+3. Default deny all unrecognized paths.
+4. Validate fields, types, enumerations, and payload sizes.
+5. Do not store media binaries/base64 in Firestore.
+6. Do not treat client timestamps as authoritative.
+7. Do not enable broad unvalidated collection rules.
 
-### entries
-- Required: `id`, `kind`, `title`, `body`, `createdAt`, `privacy`
-- Optional: `collectionId`, `pinned`, `tags`
-- Local-only media payloads: `photos`, `audioData`, `audioName`. These must not be copied into Firestore. Media will be handled separately through Firebase Storage in a later layer, with metadata references in Firestore.
+## Sync prerequisites and design
+Sync remains off until the following are implemented and tested:
+- UID-scoped local data (now implemented; verification pending).
+- Idempotent upload/download with stable document IDs.
+- Conflict handling using version/updatedAt metadata and conservative merge policy; never silently replace newer local edits.
+- Offline retry/backoff and retryable error classification.
+- Account-switch safety tests proving operations cannot cross UID boundaries.
+- Media Storage upload/download, ownership rules, size/type checks and metadata references.
 
-### collections
-- Required: `id`, `name`, `description`, `createdAt`
-
-### drafts
-- Required: `id`, `kind`, `title`, `body`, `createdAt`, `updatedAt`, `privacy`
-- Optional: `collectionId`, `tags`
-- Media payloads remain local until Storage upload and metadata handling are implemented.
-
-### moodCheckins
-- Required: `id`, `mood`, `createdAt`
-- Optional: `note`
-
-### quietMoments
-- Required: `id`, `text`, `createdAt`
-
-## Security rules principles
-1. Require authentication for every private-data operation.
-2. Allow access only within the authenticated UID's own subcollections.
-3. Default deny all other paths.
-4. Validate allowed fields and types for each record before accepting writes.
-5. Reject unexpected fields, invalid enum values, and excessively large strings/arrays.
-6. Never store base64 image/audio payloads in Firestore.
-7. Do not treat client timestamps as authoritative security data.
-8. Do not enable broad `users/{uid}/{collection}/{doc}` read/write rules without per-collection validation.
-
-## Sync behavior (future layer)
-- Cloud sync is not active in Layer 2.
-- Local IndexedDB remains the current source of truth.
-- The future sync engine must be UID-scoped, idempotent, merge-aware, and handle offline retries.
-- Account switching must isolate local data by UID before sync is enabled; this is a required pre-sync safety milestone.
-- Sync must not automatically overwrite newer local edits with older cloud versions.
-
-## Media handling (future layer)
-- Store photo/audio binaries in Firebase Storage, not Firestore.
-- Storage paths must be UID-scoped (e.g. `users/{uid}/photos/{mediaId}`).
-- Storage rules must require the matching authenticated UID and enforce file type/size limits.
-- Firestore records should hold media metadata and storage paths only.
-
-## Layer 2 work sequence
-1. Document and review this data contract. (Committed)
-2. Implement restrictive, per-collection Firestore rules. (Committed; not yet emulator-tested)
-3. Validate rules with the Firestore Emulator or Rules Playground before deployment. (Pending)
-4. Keep memory collection writes disabled in the app until local account isolation and sync safeguards are implemented.
-5. Review and deploy the rules deliberately. (Pending)
+## Deployment
+Firestore rules have passed the CI emulator tests, but they have not been deployed. Deploy only after confirming the Firebase project, inspecting the exact rules, and using authenticated deployment credentials. No production sync is enabled as part of this commit.
