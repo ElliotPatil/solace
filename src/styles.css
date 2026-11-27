@@ -820,3 +820,19 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .solace-select-check{color:var(--accent,#aeb8c8);flex:none}
 @keyframes solaceSelectIn{from{opacity:0;transform:translateY(-5px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.solace-select-chevron,.solace-select-option{transition:none}.solace-select-menu{animation:none}}
+
+/* What's Up — Entertainment Library 2.0 */
+.watch-library{margin-top:8px}
+.watch-library-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:15px}
+.watch-library-heading h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:28px;margin:6px 0 0}
+.watch-library-total{font-size:11px;color:var(--muted,#8b96a5);padding-bottom:5px}
+.watch-status-filters{display:flex;gap:7px;overflow:auto;padding:4px 0 12px;margin-bottom:3px;scrollbar-width:none}
+.watch-status-filters::-webkit-scrollbar{display:none}
+.watch-status-filters button,.watch-type-filters button{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;border:1px solid rgba(255,255,255,.09);border-radius:999px;background:transparent;color:#8994a4;padding:8px 11px;font:inherit;font-size:11px;cursor:pointer;transition:background .18s,border-color .18s,color .18s}
+.watch-status-filters button.active,.watch-type-filters button.active{border-color:rgba(190,207,230,.28);background:rgba(190,207,230,.08);color:#e2e7ee}
+.watch-status-filters button span{font-size:9px;color:#778394}
+.watch-type-filters{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:5px 0 19px}
+.watch-type-filters>span{font-size:9px;letter-spacing:.14em;color:#626e7e;margin-right:3px}
+.watch-card-status{display:grid;gap:7px;margin:0 0 15px;color:#748092;font-size:9px;letter-spacing:.12em}
+.watch-library-card .interest-card-foot{margin-top:2px}
+@media(max-width:640px){.watch-library-heading h2{font-size:25px}.watch-status-filters button,.watch-type-filters button{padding:8px 10px}.watch-type-filters{margin-bottom:15px}}
