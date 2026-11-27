@@ -3,6 +3,7 @@ import { getSkills, saveSkill, deleteSkill, getHobbies, saveHobby, deleteHobby }
 import type { Skill, Hobby, SkillCategory, HobbyCategory } from './types'
 import MediaUploader from '../../components/media/MediaUploader'
 import CustomSelect from '../../components/ui/CustomSelect'
+import TagInput from '../../components/ui/TagInput'
 import { Plus, Sparkles, Star, Lightbulb, Undo2, Redo2 } from 'lucide-react'
 
 const skillCategories: SkillCategory[] = ['technology','creative','business','communication','academic','other']
@@ -115,7 +116,7 @@ export default function SkillsHobbiesPage() {
     <form className="interest-form" onSubmit={addItem}>
       <div className="interest-form-heading"><Plus size={16}/><strong>Add a {tab==='skills'?'skill':'hobby'}</strong></div>
       <div className="interest-form-grid"><label>Name<input value={name} onChange={e=>setName(e.target.value)} placeholder={tab==='skills'?'e.g. Web development':'e.g. Chess'} maxLength={70}/></label><label>Category<CustomSelect value={category} onChange={setCategory} options={(tab==='skills'?skillCategories:hobbyCategories).map(value=>({value,label:value.replace('_',' ')}))} /></label></div>
-      <label>Description<textarea value={description} onChange={e=>setDescription(e.target.value)} rows={2} maxLength={280} placeholder="A little about this interest (optional)…"/></label><label>Tags<input value={tagsText} onChange={e=>setTagsText(e.target.value)} placeholder="e.g. creativity, problem-solving, music"/></label>
+      <label>Description<textarea value={description} onChange={e=>setDescription(e.target.value)} rows={2} maxLength={280} placeholder="A little about this interest (optional)…"/></label><label>Tags<TagInput value={tagsText} onChange={setTagsText} placeholder="e.g. creativity, problem-solving, music"/></label>
       <button className="new-button" type="submit" disabled={!name.trim()}>Save {tab==='skills'?'skill':'hobby'} <Plus size={14}/></button>
       {error&&<p className="interest-error">{error}</p>}
     </form>
