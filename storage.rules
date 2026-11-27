@@ -1,0 +1,27 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedInAs(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // User-owned media only. No public listing; each object is addressable by
+    // an opaque ID and can only be read/written by its owner.
+    match /users/{uid}/media/{mediaId} {
+      allow read: if signedInAs(uid);
+      allow create: if signedInAs(uid)
+        && request.resource.size > 0
+        && request.resource.size <= 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*|audio/.*');
+      allow update: if signedInAs(uid)
+        && request.resource.size > 0
+        && request.resource.size <= 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*|audio/.*');
+      allow delete: if signedInAs(uid);
+    }
+
+    match /{path=**} {
+      allow read, write: if false;
+    }
+  }
+}
