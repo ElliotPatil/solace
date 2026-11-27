@@ -11,18 +11,35 @@ type TmdbResult = {
   first_air_date?: string
 }
 
-export default async function handler(request: Request): Promise<Response> {
-  const url = new URL(request.url)
-  const query = (url.searchParams.get('q') || '').trim().slice(0, 80)
-  const kind = url.searchParams.get('type') === 'tv_show' ? 'tv_show' : 'movie'
+type VercelRequest = {
+  method?: string
+  query: Record<string, string | string[] | undefined>
+}
+
+type VercelResponse = {
+  status(code: number): VercelResponse
+  json(body: unknown): void
+  setHeader(name: string, value: string): void
+}
+
+export default async function handler(request: VercelRequest, response: VercelResponse): Promise<void> {
+  const queryValue = request.query.q
+  const typeValue = request.query.type
+  const query = (Array.isArray(queryValue) ? queryValue[0] : queryValue || '').trim().slice(0, 80)
+  const kind: SearchKind = (Array.isArray(typeValue) ? typeValue[0] : typeValue) === 'tv_show' ? 'tv_show' : 'movie'
   const token = process.env.TMDB_API_READ_ACCESS_TOKEN
 
   if (request.method !== 'GET') {
-    return Response.json({ error: 'Method not allowed' }, { status: 405 })
+    response.status(405).json({ error: 'Method not allowed' })
+    return
   }
-  if (query.length < 2) return Response.json({ results: [] })
+  if (query.length < 2) {
+    response.status(200).json({ results: [] })
+    return
+  }
   if (!token) {
-    return Response.json({ error: 'TMDB catalogue is not configured' }, { status: 503 })
+    response.status(503).json({ error: 'TMDB catalogue is not configured' })
+    return
   }
 
   try {
@@ -38,7 +55,8 @@ export default async function handler(request: Request): Promise<Response> {
       signal: AbortSignal.timeout(8000)
     })
     if (!upstream.ok) {
-      return Response.json({ error: 'Catalogue search failed' }, { status: upstream.status === 401 ? 503 : 502 })
+      response.status(upstream.status === 401 ? 503 : 502).json({ error: 'Catalogue search failed' })
+      return
     }
 
     const payload = await upstream.json() as { results?: TmdbResult[] }
@@ -51,10 +69,10 @@ export default async function handler(request: Request): Promise<Response> {
       releaseDate: kind === 'movie' ? item.release_date || '' : item.first_air_date || '',
       mediaType: kind
     }))
-    return Response.json({ results }, {
-      headers: { 'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600' }
-    })
+
+    response.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600')
+    response.status(200).json({ results })
   } catch {
-    return Response.json({ error: 'Catalogue search is temporarily unavailable' }, { status: 502 })
+    response.status(502).json({ error: 'Catalogue search is temporarily unavailable' })
   }
 }
