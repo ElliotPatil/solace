@@ -1030,3 +1030,10 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .watch-shelf-track::-webkit-scrollbar{display:none}
 .watch-shelf-track>.watch-library-card{flex:0 0 min(78vw,330px);width:min(78vw,330px);min-width:0;scroll-snap-align:start}
 @media(min-width:900px){.watch-shelf-track>.watch-library-card{flex-basis:300px;width:300px}}
+
+/* What's Up — independent star-based favourites */
+.watch-card-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.watch-card-actions button{display:inline-flex;align-items:center;justify-content:center}
+.watch-card-actions .watch-favorite-button{width:30px;height:30px;border:1px solid rgba(220,230,245,.12);border-radius:50%;background:rgba(255,255,255,.025);color:#8993a3;transition:color .18s ease,border-color .18s ease,background .18s ease}
+.watch-card-actions .watch-favorite-button.is-favorite{color:#e7c66f;border-color:rgba(231,198,111,.42);background:rgba(231,198,111,.09)}
+.watch-card-actions .watch-favorite-button:active{transform:scale(.94)}
