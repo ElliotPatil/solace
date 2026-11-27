@@ -3,7 +3,7 @@ import { onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebas
 import { auth, googleProvider } from './firebase'
 import { ensureUserProfile } from './userProfile'
 import { Aperture, BookOpen, Brain, ChevronLeft, ChevronRight, Compass, Film, FolderHeart, House, Menu, Plus, Search, Settings2, Sparkles, X, Feather, Pencil, Lock, Trash2, Layers, Star, ArrowLeft, Link2, Pin, Tag, UserCircle, Palette, Upload, RotateCcw, Heart, Moon, Sun, CloudMoon, Wind, Maximize2, Minimize2 } from 'lucide-react'
-import { deleteEntry, getEntries, saveEntry, getCollections, saveCollection, deleteCollection, getDrafts, saveDraft, deleteDraft, getMoodCheckins, saveMoodCheckin, getQuietMoments, saveQuietMoment, type Entry, type EntryKind, type Privacy, type Collection, type Draft, type MoodCheckin, type MoodValue } from './db'
+import { setAccountScope, deleteEntry, getEntries, saveEntry, getCollections, saveCollection, deleteCollection, getDrafts, saveDraft, deleteDraft, getMoodCheckins, saveMoodCheckin, getQuietMoments, saveQuietMoment, type Entry, type EntryKind, type Privacy, type Collection, type Draft, type MoodCheckin, type MoodValue } from './db'
 
 const sections = [
   { id: 'Sanctuary', icon: House }, { id: 'Discover', icon: Compass }, { id: 'Journal', icon: BookOpen }, { id: 'Collections', icon: FolderHeart },
@@ -157,10 +157,11 @@ function App() {
   async function refresh() {
     try { const [nextEntries,nextCollections,nextDrafts,nextMoods,nextQuiet]=await Promise.all([getEntries(),getCollections(),getDrafts(),getMoodCheckins(),getQuietMoments()]); setEntries(nextEntries); setCollections(nextCollections); setDrafts(nextDrafts); setMoodCheckins(nextMoods); setQuietMoments(nextQuiet) } catch { /* offline storage unavailable */ }
   }
-  useEffect(() => { void refresh() }, [])
   useEffect(() => {
     return onAuthStateChanged(auth, user => {
       setAuthUser(user)
+      setAccountScope(user?.uid ?? null)
+      void refresh()
       setAuthLoading(false)
     }, () => {
       setAuthMessage('Could not check your account status. Please try again.')
