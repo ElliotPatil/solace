@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { getEntertainmentItems, saveEntertainmentItem, deleteEntertainmentItem, getSongs, saveSong, deleteSong, type EntertainmentItem, type Song } from '../../db'
+import { getEntertainmentItems, saveEntertainmentItem, deleteEntertainmentItem, getSongs, saveSong, deleteSong } from '../../db'
+import type { EntertainmentItem, Song } from './types'
 import { Plus, Trash2, Film, Music2 } from 'lucide-react'
 
 const now=()=>new Date().toISOString()
