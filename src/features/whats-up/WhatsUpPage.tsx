@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getEntertainmentItems, saveEntertainmentItem, deleteEntertainmentItem, getSongs, saveSong, deleteSong } from '../../db'
 import type { EntertainmentItem, EntertainmentStatus, Song } from './types'
-import { Plus, Trash2, Film, Music2, Search, LoaderCircle } from 'lucide-react'
+import { Plus, Trash2, Film, Music2, Search, LoaderCircle, Star } from 'lucide-react'
 import CustomSelect from '../../components/ui/CustomSelect'
 import LocalMusicPlayer from './LocalMusicPlayer'
 
@@ -59,7 +59,7 @@ export default function WhatsUpPage() {
     event.preventDefault();if(!title.trim())return
     const timestamp=now()
     try{
-      await saveEntertainmentItem({id:crypto.randomUUID(),title:selectedResult?.title??title.trim(),type:selectedResult?.mediaType??kind,status,genres:[],createdAt:timestamp,updatedAt:timestamp,
+      await saveEntertainmentItem({id:crypto.randomUUID(),title:selectedResult?.title??title.trim(),type:selectedResult?.mediaType??kind,status,isFavorite:status==='favourite',genres:[],createdAt:timestamp,updatedAt:timestamp,
         ...(detail.trim()?{personalNotes:detail.trim()}:{}),
         ...(selectedResult?{description:selectedResult.overview||undefined,releaseYear:selectedResult.releaseDate?Number(selectedResult.releaseDate.slice(0,4))||undefined:undefined,posterUrl:selectedResult.posterUrl??undefined,backdropUrl:selectedResult.backdropUrl??undefined,externalIds:{tmdb:String(selectedResult.id)}}:{})})
       setTitle('');setDetail('');setSelectedResult(null);setError('');await refresh()
@@ -76,12 +76,16 @@ export default function WhatsUpPage() {
     if(item.status===nextStatus)return
     try{await saveEntertainmentItem({...item,status:nextStatus,updatedAt:now()});await refresh()}catch{setError('Could not update this title.')}
   }
-  const visibleItems=useMemo(()=>items.filter(item=>(statusFilter==='all'||item.status===statusFilter)&&(typeFilter==='all'||item.type===typeFilter)).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt)),[items,statusFilter,typeFilter])
-  const counts={all:items.length,watching:items.filter(i=>i.status==='watching').length,favourite:items.filter(i=>i.status==='favourite').length,watchlist:items.filter(i=>i.status==='watchlist').length}
+  async function toggleFavorite(item:EntertainmentItem){
+    try{await saveEntertainmentItem({...item,isFavorite:!(item.isFavorite??(item.status==='favourite')),updatedAt:now()});await refresh()}catch{setError('Could not update favourites.')}
+  }
+  const isFavorite=(item:EntertainmentItem)=>item.isFavorite??(item.status==='favourite')
+  const visibleItems=useMemo(()=>items.filter(item=>(statusFilter==='all'||(statusFilter==='favourite'?isFavorite(item):item.status===statusFilter))&&(typeFilter==='all'||item.type===typeFilter)).sort((a,b)=>b.updatedAt.localeCompare(a.updatedAt)),[items,statusFilter,typeFilter])
+  const counts={all:items.length,watching:items.filter(i=>i.status==='watching').length,favourite:items.filter(isFavorite).length,watchlist:items.filter(i=>i.status==='watchlist').length}
   const heading=statusFilter==='watching'?'Currently watching':statusFilter==='favourite'?'Your favourites':statusFilter==='watchlist'?'Your watchlist':'Movies & shows'
   const movieItems=visibleItems.filter(item=>item.type==='movie')
   const tvItems=visibleItems.filter(item=>item.type==='tv_show')
-  function renderWatchShelf(label:string,shelfItems:EntertainmentItem[]){return shelfItems.length>0?<section className="watch-shelf"><div className="watch-shelf-heading"><h3>{label}</h3><span>{shelfItems.length} {shelfItems.length===1?'title':'titles'}</span></div><div className="watch-shelf-track">{shelfItems.map(item=><article className="interest-card watch-library-card" key={item.id}>{item.posterUrl&&<img className="watch-library-poster" src={item.posterUrl} alt={item.title+' poster'} loading="lazy"/>}<div className="interest-card-top"><span>{item.type==='tv_show'?'TV SHOW':'MOVIE'} · {statusLabel[item.status]}</span><button aria-label={'Delete '+item.title} onClick={()=>void removeWatch(item.id)}><Trash2 size={14}/></button></div><h3>{item.title}</h3>{item.releaseYear&&<span className="watch-library-year">{item.releaseYear}</span>}<p>{item.personalNotes||item.description||'Saved to your library.'}</p><label className="watch-card-status">MOVE TO<CustomSelect value={item.status} onChange={value=>void changeStatus(item,value as EntertainmentStatus)} options={statusOptions}/></label><div className="interest-card-foot">ADDED {new Date(item.createdAt).toLocaleDateString()}</div></article>)}</div></section>:null}
+  function renderWatchShelf(label:string,shelfItems:EntertainmentItem[]){return shelfItems.length>0?<section className="watch-shelf"><div className="watch-shelf-heading"><h3>{label}</h3><span>{shelfItems.length} {shelfItems.length===1?'title':'titles'}</span></div><div className="watch-shelf-track">{shelfItems.map(item=><article className="interest-card watch-library-card" key={item.id}>{item.posterUrl&&<img className="watch-library-poster" src={item.posterUrl} alt={item.title+' poster'} loading="lazy"/>}<div className="interest-card-top"><span>{item.type==='tv_show'?'TV SHOW':'MOVIE'} · {statusLabel[item.status]}</span><div className="watch-card-actions"><button type="button" className={'watch-favorite-button'+(isFavorite(item)?' is-favorite':'')} aria-label={isFavorite(item)?'Remove '+item.title+' from favourites':'Add '+item.title+' to favourites'} aria-pressed={isFavorite(item)} title={isFavorite(item)?'Remove from favourites':'Add to favourites'} onClick={()=>void toggleFavorite(item)}><Star size={17} fill={isFavorite(item)?'currentColor':'none'}/></button><button type="button" aria-label={'Delete '+item.title} onClick={()=>void removeWatch(item.id)}><Trash2 size={14}/></button></div></div><h3>{item.title}</h3>{item.releaseYear&&<span className="watch-library-year">{item.releaseYear}</span>}<p>{item.personalNotes||item.description||'Saved to your library.'}</p><label className="watch-card-status">MOVE TO<CustomSelect value={item.status} onChange={value=>void changeStatus(item,value as EntertainmentStatus)} options={statusOptions}/></label><div className="interest-card-foot">ADDED {new Date(item.createdAt).toLocaleDateString()}</div></article>)}</div></section>:null}
   return <div className="content inner-page whats-up-page">
     <div className="inner-kicker">YOUR SPACE · CULTURE & CURIOSITY</div>
     <h1>What's up?</h1>
