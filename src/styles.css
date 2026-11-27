@@ -785,3 +785,22 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .interest-connection strong{font-size:13px;color:var(--text,#e9edf4);font-weight:500}
 .interest-connection strong span{color:var(--accent,#aeb8c8);padding:0 5px}
 .interest-connection p{margin:5px 0 0;font-size:11px;color:var(--muted,#9aa4b4)}
+
+/* Local skill/hobby image showcase */
+.interest-card-media{overflow:hidden}
+.media-uploader{display:grid;gap:11px;margin:14px 0 17px}
+.media-uploader-heading{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted,#8993a3)}
+.media-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.media-banner-slot{min-width:0}
+.media-preview{position:relative;overflow:hidden;border-radius:9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.media-preview img{width:100%;height:100%;display:block;object-fit:cover}
+.media-banner{height:110px}
+.media-banner img{object-position:center}
+.media-gallery-preview{aspect-ratio:1}
+.media-preview button{position:absolute;right:7px;top:7px;display:grid;place-items:center;width:25px;height:25px;border-radius:7px;background:rgba(8,10,14,.78);border:1px solid rgba(255,255,255,.12);color:#dce2ea;cursor:pointer}
+.media-add{position:relative;display:flex;align-items:center;justify-content:center;gap:7px;border:1px dashed rgba(255,255,255,.16);border-radius:9px;color:var(--muted,#8993a3);font-size:11px;cursor:pointer;transition:background .2s,border-color .2s}
+.media-add:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.28)}
+.media-add input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.media-banner-add{height:110px}
+.media-gallery-add{aspect-ratio:1;flex-direction:column;text-align:center;padding:7px;box-sizing:border-box}
+@media(max-width:640px){.media-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.media-banner{height:95px}.media-banner-add{height:95px}}
