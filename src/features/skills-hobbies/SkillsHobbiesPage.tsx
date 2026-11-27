@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { getSkills, saveSkill, deleteSkill, getHobbies, saveHobby, deleteHobby, getInterestConnections, type Skill, type Hobby } from '../../db'
-import type { SkillCategory, HobbyCategory } from './types'
+import { getSkills, saveSkill, deleteSkill, getHobbies, saveHobby, deleteHobby } from '../../db'
+import type { Skill, Hobby, SkillCategory, HobbyCategory } from './types'
 import { Plus, Trash2, Sparkles, Star, Lightbulb } from 'lucide-react'
 
 const skillCategories: SkillCategory[] = ['technology','creative','business','communication','academic','other']
