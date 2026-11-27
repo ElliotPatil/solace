@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { getMediaAsset, saveMediaAsset, deleteMediaAsset, type MediaAsset } from '../../db'
-import type { MediaAssetReference } from '../skills-hobbies/types'
+import { getMediaAsset, saveMediaAsset, deleteMediaAsset } from '../../db'
+import type { MediaAsset } from '../../features/whats-up/types'
+import type { MediaAssetReference } from '../../features/skills-hobbies/types'
 import { ImagePlus, Trash2 } from 'lucide-react'
 
 type MediaUploaderProps = {
