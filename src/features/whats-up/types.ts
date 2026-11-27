@@ -14,6 +14,7 @@ export interface EntertainmentItem extends BaseRecord {
   releaseYear?: number
   genres: string[]
   status: EntertainmentStatus
+  isFavorite?: boolean
   personalRating?: number
   personalNotes?: string
   startedAt?: string
