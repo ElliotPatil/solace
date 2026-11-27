@@ -746,3 +746,36 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .universe-map.enhanced-map .universe-star.chosen span{box-shadow:0 0 13px 5px rgba(194,215,245,.76),0 0 36px rgba(172,200,238,.58)}
 .universe-map.enhanced-map .universe-links line{stroke:rgba(171,194,226,.38);stroke-dasharray:.7 1.8;transition:opacity .25s}
 @media(prefers-reduced-motion:reduce){.universe-map.enhanced-map .universe-links line{transition:none}}
+
+
+/* Skills, hobbies and What's Up */
+.interest-page,.whats-up-page{max-width:1040px}
+.interest-tabs{display:flex;gap:8px;margin:28px 0 20px;border-bottom:1px solid var(--line,rgba(255,255,255,.09));padding-bottom:12px}
+.interest-tabs button{display:inline-flex;align-items:center;gap:9px;border:1px solid transparent;background:transparent;color:var(--muted,#8993a3);padding:10px 14px;border-radius:10px;font:inherit;cursor:pointer}
+.interest-tabs button.selected{color:var(--text,#e9edf4);background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.1)}
+.interest-tabs button span{font-size:11px;opacity:.7}
+.interest-form{display:grid;gap:14px;padding:22px;border:1px solid rgba(255,255,255,.09);border-radius:16px;background:rgba(255,255,255,.025);margin-bottom:34px}
+.interest-form-heading,.interest-insight-title{display:flex;align-items:center;gap:10px;color:var(--accent,#aeb8c8)}
+.interest-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.interest-form label{display:grid;gap:7px;color:var(--muted,#9aa4b4);font-size:12px}
+.interest-form input,.interest-form select,.interest-form textarea{width:100%;box-sizing:border-box;border:1px solid rgba(255,255,255,.1);border-radius:9px;background:rgba(0,0,0,.18);color:var(--text,#e9edf4);padding:11px 12px;font:inherit;font-size:13px;outline:none}
+.interest-form input:focus,.interest-form select:focus,.interest-form textarea:focus{border-color:var(--accent,#aeb8c8)}
+.interest-form select option{background:#11151d;color:#e9edf4}
+.interest-form .new-button{justify-self:start}
+.interest-error{color:#e59b9b;font-size:12px;margin:0}
+.interest-list-heading{display:flex;justify-content:space-between;align-items:end;margin:0 0 16px}
+.interest-list-heading h2,.interest-insight-title h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:27px;margin:5px 0 0;color:var(--text,#e9edf4)}
+.interest-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.interest-card{border:1px solid rgba(255,255,255,.09);border-radius:15px;padding:19px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015));min-width:0}
+.interest-card-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted,#8993a3);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.interest-card-top button{border:0;background:transparent;color:var(--muted,#8993a3);padding:5px;cursor:pointer}
+.interest-card h3{font-family:'Instrument Serif',serif;font-size:25px;font-weight:400;margin:17px 0 7px;color:var(--text,#e9edf4)}
+.interest-card p{font-size:13px;line-height:1.6;color:var(--muted,#9aa4b4);min-height:22px;margin:0 0 22px}
+.interest-card-foot{font-size:9px;letter-spacing:.12em;color:var(--muted,#727d8d)}
+.interest-empty{grid-column:1/-1;display:grid;justify-items:center;gap:10px;text-align:center;padding:38px 20px;border:1px dashed rgba(255,255,255,.13);border-radius:14px;color:var(--muted,#8993a3)}
+.interest-empty strong{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400;color:var(--text,#e9edf4)}
+.interest-empty span{font-size:12px;max-width:340px;line-height:1.6}
+.interest-insights{margin-top:28px;padding:22px;border:1px solid rgba(255,255,255,.08);border-radius:15px;background:rgba(255,255,255,.02)}
+.interest-insights p{font-size:13px;line-height:1.7;color:var(--muted,#9aa4b4);margin:15px 0 0}
+.interest-insights p strong{color:var(--text,#e9edf4);font-weight:500}
+@media(max-width:640px){.interest-form-grid,.interest-grid{grid-template-columns:1fr}.interest-form{padding:17px}.interest-card{padding:17px}.interest-tabs{margin-top:22px}}
