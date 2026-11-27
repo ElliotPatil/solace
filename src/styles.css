@@ -905,3 +905,42 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .local-player-empty span{font-size:10px;line-height:1.5}
 .local-player-footnote{font-size:9px;line-height:1.7;color:#737d8b;margin:16px 0 0}
 @media(max-width:640px){.local-music-player{padding:16px;margin:20px 0 30px}.local-music-heading{align-items:flex-start;flex-direction:column}.local-music-heading .new-button{align-self:flex-start}.local-player-panel{grid-template-columns:1fr;gap:14px;padding:13px}.local-player-art{min-height:108px}.local-player-main{gap:10px}.local-now-playing strong{font-size:20px}}
+
+/* Skills & hobbies — horizontal editorial cards and integrated banner editor */
+.interest-grid{display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;padding:3px 2px 18px;margin:0 -2px 4px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:rgba(170,185,207,.28) transparent;-webkit-overflow-scrolling:touch}
+.interest-grid::-webkit-scrollbar{height:4px}
+.interest-grid::-webkit-scrollbar-thumb{background:rgba(170,185,207,.25);border-radius:10px}
+.interest-card-media{position:relative;flex:0 0 min(390px,84vw);min-width:0;padding:0;overflow:hidden;scroll-snap-align:start;border-radius:16px;background:linear-gradient(155deg,#171d27,#0d1118);border:1px solid rgba(210,220,236,.12);box-shadow:0 12px 35px rgba(0,0,0,.16)}
+.interest-card-media .media-uploader{display:flex;flex-direction:column;gap:0;margin:0}
+.interest-card-media .media-uploader-heading{display:none}
+.interest-card-media .media-banner-slot{width:100%}
+.interest-card-media .media-banner{height:178px;border:0;border-radius:0;background:linear-gradient(180deg,transparent 55%,#111720 100%)}
+.interest-card-media .media-banner:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,10,15,.08) 20%,rgba(10,14,21,.24) 55%,#111720 100%);pointer-events:none}
+.interest-card-media .media-banner img{object-fit:cover;opacity:.92}
+.interest-card-media .media-banner-add{height:178px;border:0;border-radius:0;background:radial-gradient(ellipse at 50% 35%,rgba(145,163,190,.11),transparent 70%),linear-gradient(180deg,#1a2230,#111720);color:#9ba8ba}
+.interest-card-media .media-banner-actions{position:absolute;z-index:2;right:11px;top:11px;display:flex;gap:6px}
+.interest-card-media .media-banner-actions button,.interest-card-media .media-banner-actions label{display:flex;align-items:center;justify-content:center;gap:5px;width:auto;height:29px;padding:0 9px;border-radius:8px;background:rgba(7,10,15,.72);border:1px solid rgba(255,255,255,.16);color:#edf1f6;font-size:10px;backdrop-filter:blur(8px);cursor:pointer}
+.interest-card-media .media-banner-actions label{position:relative}
+.interest-card-media .media-banner-actions input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}
+.interest-card-content{position:relative;margin-top:-1px;padding:0 19px 18px;background:linear-gradient(180deg,#111720,#10151d)}
+.interest-card-content .interest-card-top{padding-top:2px}
+.interest-card-content h3{margin:12px 0 7px}
+.interest-card-content p{min-height:44px;margin:0 0 17px}
+.interest-card-media .media-gallery{padding:0 18px 17px;background:#10151d;grid-template-columns:repeat(4,minmax(0,1fr))}
+.interest-card-media .media-gallery-preview,.interest-card-media .media-gallery-add{aspect-ratio:1}
+.interest-card-media .media-gallery-add{min-height:66px}
+.banner-crop-backdrop{position:fixed;inset:0;z-index:120;background:rgba(2,4,8,.84);backdrop-filter:blur(12px);display:grid;place-items:center;padding:18px}
+.banner-crop-dialog{width:min(520px,100%);padding:20px;border:1px solid rgba(215,225,240,.16);border-radius:16px;background:linear-gradient(155deg,#1a202b,#0c1119);box-shadow:0 28px 90px rgba(0,0,0,.65)}
+.banner-crop-heading,.banner-crop-footer{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.banner-crop-heading span{font-size:9px;letter-spacing:.16em;color:#8e9bad}
+.banner-crop-heading h3{font:400 27px 'Instrument Serif',serif;margin:5px 0 17px;color:#edf0f5}
+.banner-crop-heading>button{align-self:flex-start;border:0;background:transparent;color:#aab4c3;padding:5px}
+.banner-crop-viewport{height:230px;position:relative;overflow:hidden;border-radius:10px;background:#080b11;touch-action:none;cursor:grab;user-select:none}
+.banner-crop-viewport:active{cursor:grabbing}
+.banner-crop-viewport img{position:absolute;left:50%;top:50%;max-width:none;width:auto;height:auto;min-width:100%;min-height:100%;object-fit:contain;transform-origin:center;pointer-events:none;user-select:none}
+.banner-crop-viewport>span{position:absolute;left:0;right:0;bottom:0;padding:22px 10px 9px;text-align:center;font-size:9px;color:#e1e6ef;background:linear-gradient(transparent,rgba(0,0,0,.58));pointer-events:none}
+.banner-crop-zoom{display:grid;grid-template-columns:45px 1fr;align-items:center;gap:12px;margin:16px 0;color:#aab4c3;font-size:11px}
+.banner-crop-zoom input{width:100%;accent-color:#b8c4d6}
+.banner-crop-footer{justify-content:flex-end}
+.banner-crop-cancel{border:1px solid rgba(220,230,245,.15);background:transparent;color:#b5bfcd;border-radius:5px;padding:10px 14px;font-size:11px}
+@media(max-width:640px){.interest-grid{margin-right:-18px;padding-right:18px}.interest-card-media{flex-basis:86vw}.interest-card-media .media-banner,.interest-card-media .media-banner-add{height:158px}.banner-crop-dialog{padding:16px}.banner-crop-viewport{height:205px}}
