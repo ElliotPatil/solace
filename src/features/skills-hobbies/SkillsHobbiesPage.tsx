@@ -44,6 +44,10 @@ export default function SkillsHobbiesPage() {
     ;[...skills,...hobbies].forEach(item=>item.tags.forEach(tag=>counts.set(tag.toLowerCase(),(counts.get(tag.toLowerCase())||0)+1)))
     return [...counts].filter(([,count])=>count>1).map(([tag])=>tag)
   },[skills,hobbies])
+  const crossConnections = useMemo(()=>skills.flatMap(skill=>hobbies.flatMap(hobby=>{
+    const shared=skill.tags.filter(tag=>hobby.tags.some(other=>other.toLowerCase()===tag.toLowerCase()))
+    return shared.length?[{skill:skill.name,hobby:hobby.name,tags:[...new Set(shared.map(tag=>tag.toLowerCase()))]}]:[]
+  })),[skills,hobbies])
   const items = tab==='skills'?skills:hobbies
   return <div className="content inner-page interest-page">
     <div className="inner-kicker">YOUR SPACE · INTERESTS</div>
@@ -59,6 +63,6 @@ export default function SkillsHobbiesPage() {
     </form>
     <div className="interest-list-heading"><div><span className="eyebrow muted">{tab.toUpperCase()} · {items.length}</span><h2>{tab==='skills'?'Skills you are building':'Hobbies you enjoy'}</h2></div></div>
     {items.length===0?<div className="interest-empty"><Lightbulb size={22}/><strong>Your list starts with one thing.</strong><span>Add something you already know, or something you're curious to explore.</span></div>:<div className="interest-grid">{items.map(item=><article className="interest-card" key={item.id}><div className="interest-card-top"><span>{item.category.replace('_',' ')}</span><button aria-label={'Delete '+item.name} onClick={()=>void removeItem(item.id)}><Trash2 size={14}/></button></div><h3>{item.name}</h3><p>{item.description||'A little part of what makes you, you.'}</p><div className="interest-card-foot">ADDED {new Date(item.createdAt).toLocaleDateString()}</div></article>)}</div>}
-    <section className="interest-insights"><div className="interest-insight-title"><Sparkles size={16}/><div><span className="eyebrow muted">EARLY PATTERNS</span><h2>Connections & common ground</h2></div></div>{allTags.length? <p>These tags appear across more than one interest: <strong>{allTags.join(', ')}</strong>. As you add more detail, Solace can surface richer connections.</p>:<p>Add tags and related interests as the feature grows. Solace will look for genuine overlaps — it won't invent strengths or conclusions from an empty list.</p>}</section>
+    <section className="interest-insights"><div className="interest-insight-title"><Sparkles size={16}/><div><span className="eyebrow muted">EARLY PATTERNS</span><h2>Connections & common ground</h2></div></div>{crossConnections.length>0?<div className="interest-connection-list">{crossConnections.map((connection,index)=><div className="interest-connection" key={connection.skill+'-'+connection.hobby+'-'+index}><strong>{connection.skill} <span>↔</span> {connection.hobby}</strong><p>Shared themes: {connection.tags.join(', ')}</p></div>)}</div>:allTags.length?<p>These themes appear across more than one interest: <strong>{allTags.join(', ')}</strong>. Add matching tags to a skill and a hobby to reveal their direct connection.</p>:<p>Add tags to your skills and hobbies. Solace will surface real overlaps from what you enter — it won't invent strengths or conclusions.</p>}</section>
   </div>
 }
