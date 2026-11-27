@@ -9,6 +9,8 @@ export interface EntertainmentItem extends BaseRecord {
   description?: string
   poster?: MediaAssetReference
   backdrop?: MediaAssetReference
+  posterUrl?: string
+  backdropUrl?: string
   releaseYear?: number
   genres: string[]
   status: EntertainmentStatus
