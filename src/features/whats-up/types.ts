@@ -30,6 +30,8 @@ export interface Song extends BaseRecord {
   releaseDate?: string
   spotifyTrackId?: string
   spotifyUrl?: string
+  localAudioAssetId?: string
+  localFileName?: string
   personalNotes?: string
   categories: Array<'favourite' | 'discovered' | 'want_to_listen'>
 }
