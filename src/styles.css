@@ -986,3 +986,11 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .interest-card-media .media-uploader{pointer-events:none}
 .interest-card-media .interest-card-menu-wrap{pointer-events:auto}
 .interest-card-media .media-banner-add{pointer-events:auto}
+
+/* Shared tag autocomplete */
+.tag-input-wrap{position:relative;width:100%}
+.tag-input-wrap>input{width:100%}
+.tag-suggestions{position:absolute;z-index:30;left:0;right:0;top:calc(100% + 6px);max-height:220px;overflow:auto;padding:5px;border:1px solid rgba(220,230,245,.14);border-radius:10px;background:#121923;box-shadow:0 14px 34px #0009;display:grid;gap:2px}
+.tag-suggestions button{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px;border:0;border-radius:6px;background:transparent;color:#e6eaf0;text-align:left}
+.tag-suggestions button.active,.tag-suggestions button:hover{background:rgba(255,255,255,.08)}
+.tag-suggestions button small{color:#8490a0;font-size:10px}
