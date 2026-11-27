@@ -779,3 +779,9 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .interest-insights p{font-size:13px;line-height:1.7;color:var(--muted,#9aa4b4);margin:15px 0 0}
 .interest-insights p strong{color:var(--text,#e9edf4);font-weight:500}
 @media(max-width:640px){.interest-form-grid,.interest-grid{grid-template-columns:1fr}.interest-form{padding:17px}.interest-card{padding:17px}.interest-tabs{margin-top:22px}}
+
+.interest-connection-list{display:grid;gap:9px;margin-top:16px}
+.interest-connection{padding:13px 15px;border-radius:10px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07)}
+.interest-connection strong{font-size:13px;color:var(--text,#e9edf4);font-weight:500}
+.interest-connection strong span{color:var(--accent,#aeb8c8);padding:0 5px}
+.interest-connection p{margin:5px 0 0;font-size:11px;color:var(--muted,#9aa4b4)}
