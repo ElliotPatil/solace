@@ -804,3 +804,19 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .media-banner-add{height:110px}
 .media-gallery-add{aspect-ratio:1;flex-direction:column;text-align:center;padding:7px;box-sizing:border-box}
 @media(max-width:640px){.media-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.media-banner{height:95px}.media-banner-add{height:95px}}
+
+/* Solace custom dropdown system — replaces native OS select popups */
+.solace-select{position:relative;width:100%;min-width:0}
+.solace-select-trigger{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:46px;padding:12px 14px;border:1px solid rgba(205,218,236,.13);border-radius:11px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));color:#e3e7ee;text-align:left;font:inherit;font-size:13px;cursor:pointer;transition:border-color .2s,background .2s,box-shadow .2s}
+.solace-select-trigger:hover,.solace-select.is-open .solace-select-trigger{border-color:rgba(190,207,230,.28);background:rgba(255,255,255,.045)}
+.solace-select-trigger:focus-visible{outline:2px solid rgba(178,199,225,.45);outline-offset:2px}
+.solace-select-placeholder{color:#687486}
+.solace-select-chevron{flex:none;color:#8d9aab;transition:transform .22s ease}
+.solace-select.is-open .solace-select-chevron{transform:rotate(180deg)}
+.solace-select-menu{position:absolute;z-index:80;left:0;right:0;top:calc(100% + 7px);max-height:min(280px,42vh);overflow:auto;padding:5px;border:1px solid rgba(205,218,236,.14);border-radius:13px;background:linear-gradient(155deg,#171d27,#0d1118);box-shadow:0 18px 45px rgba(0,0,0,.52);transform-origin:top center;animation:solaceSelectIn .16s ease-out;scrollbar-width:thin;scrollbar-color:#394353 transparent}
+.solace-select-option{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;border:1px solid transparent;border-radius:8px;background:transparent;color:#aeb8c7;text-align:left;padding:12px 11px;font:inherit;font-size:13px;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.solace-select-option:hover{background:rgba(255,255,255,.045);color:#e5eaf2}
+.solace-select-option.selected{background:rgba(174,190,212,.075);border-color:rgba(174,190,212,.08);color:#e5eaf2}
+.solace-select-check{color:var(--accent,#aeb8c8);flex:none}
+@keyframes solaceSelectIn{from{opacity:0;transform:translateY(-5px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.solace-select-chevron,.solace-select-option{transition:none}.solace-select-menu{animation:none}}
