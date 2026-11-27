@@ -862,3 +862,46 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .tmdb-attribution strong{color:#9aa9bc;font-weight:600}
 @media(max-width:640px){.catalogue-suggestions{max-height:48vh}.catalogue-suggestion{padding:8px}.watch-library-poster{max-height:240px}}
 @media(prefers-reduced-motion:reduce){.catalogue-spinner{animation:none}}
+
+
+/* Local offline music player */
+.local-music-player{margin:26px 0 38px;padding:24px;border:1px solid rgba(210,216,228,.11);background:linear-gradient(145deg,rgba(24,29,39,.92),rgba(11,14,21,.96));border-radius:10px}
+.local-music-heading,.local-library-heading{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.local-music-heading h2{font-family:'Instrument Serif',serif;font-size:27px;font-weight:400;margin:7px 0 5px;color:#eee}
+.local-music-heading p{font-size:11px;color:#9299a5;margin:0;line-height:1.6}
+.local-music-heading .new-button{white-space:nowrap}
+.local-audio-input{display:none}
+.local-player-panel{display:grid;grid-template-columns:150px minmax(0,1fr);gap:22px;margin-top:22px;padding:18px;background:rgba(4,7,12,.55);border:1px solid rgba(210,216,228,.08);border-radius:8px}
+.local-player-art{min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;color:#aeb8c8;background:radial-gradient(circle at 50% 42%,rgba(160,177,205,.19),transparent 64%),linear-gradient(145deg,#1b2432,#0c111b);border:1px solid rgba(210,216,228,.08)}
+.local-player-art span{font-size:8px;letter-spacing:1.6px;color:#7f8998}
+.local-player-main{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.local-now-playing{display:grid;gap:4px}
+.local-now-playing strong{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400;color:#f0efec;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.local-now-playing small{font-size:10px;color:#9299a5}
+.local-audio-element{width:100%;height:36px;filter:grayscale(1);opacity:.86}
+.local-player-controls{display:flex;align-items:center;justify-content:center;gap:14px}
+.local-player-controls button{width:34px;height:34px;border:0;background:transparent;color:#a6adba;display:grid;place-items:center;border-radius:50%}
+.local-player-controls button:hover,.local-player-controls button.active{color:#eef0f3;background:rgba(220,228,240,.09)}
+.local-player-controls button:disabled{opacity:.35;cursor:not-allowed}
+.local-player-controls .local-play-button{width:42px;height:42px;background:#d9dde4;color:#10141b}
+.local-player-controls .local-play-button:hover{background:#fff;color:#10141b}
+.local-player-time{display:flex;justify-content:space-between;color:#747d8b;font-size:9px;font-variant-numeric:tabular-nums}
+.local-library-heading{padding:22px 0 11px;border-bottom:1px solid rgba(210,216,228,.08);color:#9da6b4}
+.local-library-heading div{display:grid;gap:4px}
+.local-library-heading strong{font-size:12px;color:#e5e7eb;font-weight:600}
+.local-library-heading span{font-size:10px;color:#828b99}
+.local-track-list{display:grid}
+.local-track-row{display:flex;align-items:center;gap:12px;padding:11px 2px;border-bottom:1px solid rgba(210,216,228,.06)}
+.local-track-row.current{background:rgba(180,195,218,.045)}
+.local-track-play,.local-track-delete{flex:none;width:30px;height:30px;border:0;background:transparent;color:#9ca6b4;display:grid;place-items:center;border-radius:50%}
+.local-track-play:hover,.local-track-delete:hover{background:rgba(220,228,240,.08);color:#fff}
+.local-track-info{flex:1;min-width:0;display:grid;gap:4px;text-align:left;border:0;background:transparent;padding:0;color:#e5e7eb}
+.local-track-info strong{font-size:11px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.local-track-info span{font-size:9px;color:#7f8998;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.local-track-delete{color:#737d8c}
+.local-player-message{font-size:10px;color:#c4cbd6;margin:12px 0 0}
+.local-player-empty{display:grid;justify-items:center;gap:8px;padding:25px 12px;color:#8893a2;text-align:center}
+.local-player-empty strong{font-size:12px;color:#dce0e6;font-weight:500}
+.local-player-empty span{font-size:10px;line-height:1.5}
+.local-player-footnote{font-size:9px;line-height:1.7;color:#737d8b;margin:16px 0 0}
+@media(max-width:640px){.local-music-player{padding:16px;margin:20px 0 30px}.local-music-heading{align-items:flex-start;flex-direction:column}.local-music-heading .new-button{align-self:flex-start}.local-player-panel{grid-template-columns:1fr;gap:14px;padding:13px}.local-player-art{min-height:108px}.local-player-main{gap:10px}.local-now-playing strong{font-size:20px}}
