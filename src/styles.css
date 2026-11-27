@@ -994,3 +994,28 @@ input,textarea,select,[contenteditable="true"],[contenteditable="true"] *{ -webk
 .tag-suggestions button{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px;border:0;border-radius:6px;background:transparent;color:#e6eaf0;text-align:left}
 .tag-suggestions button.active,.tag-suggestions button:hover{background:rgba(255,255,255,.08)}
 .tag-suggestions button small{color:#8490a0;font-size:10px}
+
+
+/* Skill-card banner crop and controls */
+.interest-card-media{aspect-ratio:1.02;min-height:350px}
+.interest-card-media>.interest-card-content{height:100%;min-height:0}
+.interest-card-media .media-banner img{object-fit:cover;object-position:center}
+.interest-card-media .interest-card-banner-add{position:absolute;z-index:4;right:56px;top:12px;width:34px;height:34px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(7,10,15,.72);color:#edf1f6;pointer-events:auto}
+.interest-card-media .media-banner-add{display:none}
+.banner-crop-hint{margin:0 0 12px;color:#9ba6b5;font-size:11px;line-height:1.5}
+.banner-crop-viewport{aspect-ratio:1.02;height:auto;max-height:54vh;touch-action:none;display:block;overflow:hidden}
+.banner-crop-viewport img{width:100%;height:100%;object-fit:cover;transform-origin:center;pointer-events:none}
+.banner-crop-viewport>span{font-size:8px;letter-spacing:1.4px}
+.banner-crop-dialog{max-height:92dvh;overflow:auto}
+.interest-delete-backdrop{position:fixed;inset:0;z-index:1300;display:grid;place-items:center;padding:22px;background:rgba(2,4,8,.82);backdrop-filter:blur(12px)}
+.interest-delete-dialog{position:relative;width:min(100%,390px);padding:27px;border:1px solid rgba(215,225,240,.16);border-radius:16px;background:linear-gradient(155deg,#1a202b,#0b1018);box-shadow:0 28px 90px #000a;animation:rise .22s ease}
+.interest-delete-icon{width:38px;height:38px;display:grid;place-items:center;margin-bottom:20px;border:1px solid rgba(230,130,130,.25);border-radius:11px;background:rgba(190,75,75,.1);color:#e58c8c}
+.interest-delete-close{position:absolute;right:17px;top:17px;border:0;background:transparent;color:#9da7b5;padding:7px}
+.interest-delete-dialog h2{font:400 31px 'Instrument Serif',serif;margin:10px 0;color:#f0efec}
+.interest-delete-dialog p{font-size:12px;line-height:1.7;color:#aab2bf;margin:0}
+.interest-delete-dialog p strong{color:#e8eaf0}
+.interest-delete-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:25px}
+.interest-delete-cancel,.interest-delete-confirm{display:inline-flex;align-items:center;gap:7px;padding:10px 14px;border-radius:6px;font-size:11px}
+.interest-delete-cancel{border:1px solid rgba(220,230,245,.16);background:transparent;color:#c1c9d5}
+.interest-delete-confirm{border:1px solid #8d4848;background:#a64e4e;color:#fff}
+@media(max-width:640px){.interest-card-media{flex-basis:86vw;aspect-ratio:1.02;min-height:0}.interest-card-media>.interest-card-content{height:100%;min-height:0}.banner-crop-dialog{padding:16px}.banner-crop-viewport{max-height:48vh}}
