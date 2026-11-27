@@ -1,6 +1,6 @@
 export type EntryKind = 'memory' | 'reflection' | 'experience'
 export type Privacy = 'private' | 'ai-readable' | 'shareable'
-export interface Entry { id:string; kind:EntryKind; title:string; body:string; createdAt:string; privacy:Privacy; collectionId?:string; pinned?:boolean; tags?:string[]; photos?:string[]; audioData?:string; audioName?:string }
+export interface Entry { id:string; kind:EntryKind; title:string; body:string; createdAt:string; updatedAt?:string; privacy:Privacy; collectionId?:string; pinned?:boolean; tags?:string[]; photos?:string[]; audioData?:string; audioName?:string }
 export interface Collection { id:string; name:string; description:string; createdAt:string }
 export interface Draft { id:string; kind:EntryKind; title:string; body:string; createdAt:string; updatedAt:string; privacy:Privacy; collectionId?:string; tags?:string[]; photos?:string[]; audioData?:string; audioName?:string }
 export type MoodValue = 'Heavy' | 'Low' | 'Steady' | 'Good' | 'Bright'
@@ -54,7 +54,7 @@ export async function getEntries():Promise<Entry[]>{
   const rows=await runRequest<Entry[]>(ENTRIES,'readonly',store=>store.getAll())
   return rows.sort((a,b)=>b.createdAt.localeCompare(a.createdAt))
 }
-export async function saveEntry(entry:Entry):Promise<void>{await runRequest(ENTRIES,'readwrite',store=>store.put(entry))}
+export async function saveEntry(entry:Entry):Promise<void>{const next={...entry,updatedAt:new Date().toISOString()};await runRequest(ENTRIES,'readwrite',store=>store.put(next))}
 export async function deleteEntry(id:string):Promise<void>{await runRequest(ENTRIES,'readwrite',store=>store.delete(id))}
 export async function getCollections():Promise<Collection[]>{
   const rows=await runRequest<Collection[]>(COLLECTIONS,'readonly',store=>store.getAll())
