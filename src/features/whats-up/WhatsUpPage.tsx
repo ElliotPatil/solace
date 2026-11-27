@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getEntertainmentItems, saveEntertainmentItem, deleteEntertainmentItem, getSongs, saveSong, deleteSong } from '../../db'
 import type { EntertainmentItem, Song } from './types'
 import { Plus, Trash2, Film, Music2 } from 'lucide-react'
+import CustomSelect from '../../components/ui/CustomSelect'
 
 const now=()=>new Date().toISOString()
 export default function WhatsUpPage() {
@@ -35,8 +36,8 @@ export default function WhatsUpPage() {
     <div className="interest-tabs"><button className={tab==='watch'?'selected':''} onClick={()=>setTab('watch')}><Film size={14}/> Watch <span>{items.length}</span></button><button className={tab==='listen'?'selected':''} onClick={()=>setTab('listen')}><Music2 size={14}/> Listen <span>{songs.length}</span></button></div>
     <form className="interest-form" onSubmit={tab==='watch'?addWatch:addSong}>
       <div className="interest-form-heading"><Plus size={16}/><strong>Add {tab==='watch'?'a movie or show':'a song'}</strong></div>
-      <div className="interest-form-grid"><label>Title<input value={title} onChange={e=>setTitle(e.target.value)} placeholder={tab==='watch'?'e.g. Interstellar':'e.g. A song you love'} maxLength={100}/></label>{tab==='watch'?<label>Type<select value={kind} onChange={e=>setKind(e.target.value as 'movie'|'tv_show')}><option value="movie">Movie</option><option value="tv_show">TV show</option></select></label>:<label>Artist<input value={detail} onChange={e=>setDetail(e.target.value)} placeholder="Artist name"/></label>}</div>
-      {tab==='watch'&&<div className="interest-form-grid"><label>Status<select value={status} onChange={e=>setStatus(e.target.value as typeof status)}><option value="watchlist">Watchlist</option><option value="watching">Currently watching</option><option value="favourite">Favourite</option></select></label><label>Notes<input value={detail} onChange={e=>setDetail(e.target.value)} placeholder="Optional note"/></label></div>}
+      <div className="interest-form-grid"><label>Title<input value={title} onChange={e=>setTitle(e.target.value)} placeholder={tab==='watch'?'e.g. Interstellar':'e.g. A song you love'} maxLength={100}/></label>{tab==='watch'?<label>Type<CustomSelect value={kind} onChange={value=>setKind(value as 'movie'|'tv_show')} options={[{value:"movie",label:"Movie"},{value:"tv_show",label:"TV show"}]} /></label>:<label>Artist<input value={detail} onChange={e=>setDetail(e.target.value)} placeholder="Artist name"/></label>}</div>
+      {tab==='watch'&&<div className="interest-form-grid"><label>Status<CustomSelect value={status} onChange={value=>setStatus(value as typeof status)} options={[{value:"watchlist",label:"Watchlist"},{value:"watching",label:"Currently watching"},{value:"favourite",label:"Favourite"}]} /></label><label>Notes<input value={detail} onChange={e=>setDetail(e.target.value)} placeholder="Optional note"/></label></div>}
       <button className="new-button" type="submit" disabled={!title.trim()}>Save {tab==='watch'?'title':'song'} <Plus size={14}/></button>
       {error&&<p className="interest-error">{error}</p>}
     </form>
