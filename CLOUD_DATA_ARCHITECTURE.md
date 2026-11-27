@@ -34,7 +34,7 @@ users/{uid}/quietMoments/{momentId}   # quiet moments
 
 ## Field mapping
 Entries require `id`, `kind`, `title`, `body`, `createdAt`, `privacy`; optional `collectionId`, `pinned`, and `tags`. Drafts similarly require their content, timestamps and privacy. Collections contain id/name/description/createdAt. Mood records contain id/mood/createdAt and optional note. Quiet moments contain id/text/createdAt.
-Local-only media payloads (`photos`, `audioData`, `audioName`) must not be written to Firestore. Media requires separate Firebase Storage upload and metadata handling.
+Local-only media payloads (`photos`, `audioData`, `audioName`) must not be written to Firestore. Media requires separate Firebase Storage upload and metadata handling. Storage rules now restrict media to owner paths, allow image/audio content types, cap individual uploads at 10 MiB, and deny unmatched paths.
 
 ## Security principles
 1. Authenticate all private-data operations.
@@ -52,7 +52,7 @@ Sync remains off until the following are implemented and tested:
 - Conflict handling using version/updatedAt metadata and conservative merge policy; never silently replace newer local edits.
 - Offline retry/backoff and retryable error classification.
 - Account-switch safety tests proving operations cannot cross UID boundaries.
-- Media Storage upload/download, ownership rules, size/type checks and metadata references.
+- Media Storage upload/download client integration, ownership rules (rules added), size/type validation (rules added), and metadata references.
 
 ## Deployment
 Firestore rules have passed the CI emulator tests, but they have not been deployed. Deploy only after confirming the Firebase project, inspecting the exact rules, and using authenticated deployment credentials. No production sync is enabled as part of this commit.
