@@ -13,6 +13,7 @@ export default function SkillsHobbiesPage() {
   const [tab,setTab] = useState<'skills'|'hobbies'>('skills')
   const [name,setName] = useState('')
   const [description,setDescription] = useState('')
+  const [tagsText,setTagsText] = useState('')
   const [category,setCategory] = useState<string>('technology')
   const [error,setError] = useState('')
   async function refresh() {
@@ -27,11 +28,11 @@ export default function SkillsHobbiesPage() {
     const now=stamp(), id=crypto.randomUUID()
     try {
       if(tab==='skills') {
-        await saveSkill({id,name:name.trim(),description:description.trim(),category:category as SkillCategory,showcaseImages:[],tags:[],relatedHobbyIds:[],relatedSkillIds:[],isPinned:false,archived:false,createdAt:now,updatedAt:now})
+        await saveSkill({id,name:name.trim(),description:description.trim(),category:category as SkillCategory,showcaseImages:[],tags:tagsText.split(',').map(tag=>tag.trim()).filter(Boolean),relatedHobbyIds:[],relatedSkillIds:[],isPinned:false,archived:false,createdAt:now,updatedAt:now})
       } else {
-        await saveHobby({id,name:name.trim(),description:description.trim(),category:category as HobbyCategory,showcaseImages:[],tags:[],relatedSkillIds:[],isPinned:false,archived:false,createdAt:now,updatedAt:now})
+        await saveHobby({id,name:name.trim(),description:description.trim(),category:category as HobbyCategory,showcaseImages:[],tags:tagsText.split(',').map(tag=>tag.trim()).filter(Boolean),relatedSkillIds:[],isPinned:false,archived:false,createdAt:now,updatedAt:now})
       }
-      setName('');setDescription('');setError('');await refresh()
+      setName('');setDescription('');setTagsText('');setError('');await refresh()
     } catch {setError('Could not save this item on your device.')}
   }
   async function removeItem(id:string) {
@@ -52,7 +53,7 @@ export default function SkillsHobbiesPage() {
     <form className="interest-form" onSubmit={addItem}>
       <div className="interest-form-heading"><Plus size={16}/><strong>Add a {tab==='skills'?'skill':'hobby'}</strong></div>
       <div className="interest-form-grid"><label>Name<input value={name} onChange={e=>setName(e.target.value)} placeholder={tab==='skills'?'e.g. Web development':'e.g. Chess'} maxLength={70}/></label><label>Category<select value={category} onChange={e=>setCategory(e.target.value)}>{(tab==='skills'?skillCategories:hobbyCategories).map(value=><option key={value} value={value}>{value.replace('_',' ')}</option>)}</select></label></div>
-      <label>Description<textarea value={description} onChange={e=>setDescription(e.target.value)} rows={2} maxLength={280} placeholder="A little about this interest (optional)…"/></label>
+      <label>Description<textarea value={description} onChange={e=>setDescription(e.target.value)} rows={2} maxLength={280} placeholder="A little about this interest (optional)…"/></label><label>Tags<input value={tagsText} onChange={e=>setTagsText(e.target.value)} placeholder="e.g. creativity, problem-solving, music"/></label>
       <button className="new-button" type="submit" disabled={!name.trim()}>Save {tab==='skills'?'skill':'hobby'} <Plus size={14}/></button>
       {error&&<p className="interest-error">{error}</p>}
     </form>
