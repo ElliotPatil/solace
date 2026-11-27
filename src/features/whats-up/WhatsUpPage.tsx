@@ -32,7 +32,6 @@ export default function WhatsUpPage() {
     const timestamp=now()
     try{await saveEntertainmentItem({id:crypto.randomUUID(),title:title.trim(),type:kind,status,genres:[],createdAt:timestamp,updatedAt:timestamp,...(detail.trim()?{personalNotes:detail.trim()}:{})});setTitle('');setDetail('');setError('');await refresh()}catch{setError('Could not save this title.')}
   }
-  async function addSong(event:React.FormEvent<HTML-form-element>){ }
   async function addSong(event:React.FormEvent<HTMLFormElement>){
     event.preventDefault();if(!title.trim())return
     const timestamp=now()
