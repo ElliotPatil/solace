@@ -153,3 +153,17 @@ export async function deleteSpotifyImport(id:string):Promise<void>{await deleteR
 export async function getMediaAsset(id:string):Promise<MediaAsset|undefined>{return runRequest<MediaAsset|undefined>(MEDIA_ASSETS,'readonly',store=>store.get(id))}
 export async function saveMediaAsset(item:MediaAsset):Promise<void>{await saveRecord(MEDIA_ASSETS,item)}
 export async function deleteMediaAsset(id:string):Promise<void>{await deleteRecord(MEDIA_ASSETS,id)}
+
+
+// Tags are global suggestions derived from saved content across the app.
+export async function getAllTags():Promise<string[]>{
+  const [entries,drafts,skills,hobbies]=await Promise.all([
+    getEntries(),getDrafts(),getSkills(),getHobbies()
+  ])
+  const unique=new Map<string,string>()
+  ;[...entries,...drafts,...skills,...hobbies].forEach(item=>('tags' in item ? item.tags||[] : []).forEach(tag=>{
+    const value=tag.trim().replace(/^#/,'')
+    if(value&&!unique.has(value.toLocaleLowerCase()))unique.set(value.toLocaleLowerCase(),value)
+  }))
+  return [...unique.values()].sort((a,b)=>a.localeCompare(b))
+}
