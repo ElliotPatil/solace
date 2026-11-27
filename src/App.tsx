@@ -172,8 +172,8 @@ function App() {
     setAuthMessage('')
     try {
       const result = await signInWithPopup(auth, googleProvider)
-      await ensureUserProfile(result.user)
-      setAuthMessage('Your Solace account is connected.')
+      const accountStatus = await ensureUserProfile(result.user)
+      setAuthMessage(accountStatus === 'created' ? 'Your Solace account is ready.' : 'Welcome back to Solace.')
     } catch (error) {
       const code = (error as { code?: string }).code
       setAuthMessage(code === 'auth/popup-closed-by-user' ? 'Sign-in was cancelled.' : code === 'auth/unauthorized-domain' ? 'This domain is not yet authorized in Firebase. Add it in Authentication settings.' : 'Sign-in could not be completed. Please try again.')

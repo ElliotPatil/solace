@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore'
+import { doc, getDoc, runTransaction, serverTimestamp } from 'firebase/firestore'
 import { firestore } from './firebase'
 import type { User } from 'firebase/auth'
 
@@ -8,28 +8,42 @@ export interface UserProfile {
   email: string | null
   photoURL: string | null
   createdAt?: unknown
+  lastLoginAt?: unknown
   updatedAt?: unknown
 }
 
-/** Creates a profile on first sign-in and refreshes basic account details on later sign-ins. */
-export async function ensureUserProfile(user: User): Promise<void> {
-  const profileRef = doc(firestore, 'users', user.uid)
-  const existing = await getDoc(profileRef)
-  const profileData = {
-    uid: user.uid,
-    displayName: user.displayName ?? null,
-    email: user.email ?? null,
-    photoURL: user.photoURL ?? null,
-    updatedAt: serverTimestamp(),
-  }
+export type AccountResolution = 'created' | 'existing'
 
-  await setDoc(
-    profileRef,
-    existing.exists()
-      ? profileData
-      : { ...profileData, createdAt: serverTimestamp() },
-    { merge: true },
-  )
+/**
+ * Resolves a Firebase UID to its account profile.
+ * A transaction prevents simultaneous sign-ins from creating duplicate profiles
+ * and ensures createdAt is only written during initial account creation.
+ */
+export async function ensureUserProfile(user: User): Promise<AccountResolution> {
+  const profileRef = doc(firestore, 'users', user.uid)
+
+  return runTransaction(firestore, async transaction => {
+    const existing = await transaction.get(profileRef)
+    const profileData = {
+      uid: user.uid,
+      displayName: user.displayName ?? null,
+      email: user.email ?? null,
+      photoURL: user.photoURL ?? null,
+      lastLoginAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    }
+
+    if (existing.exists()) {
+      transaction.set(profileRef, profileData, { merge: true })
+      return 'existing'
+    }
+
+    transaction.set(profileRef, {
+      ...profileData,
+      createdAt: serverTimestamp(),
+    })
+    return 'created'
+  })
 }
 
 /** Returns the signed-in user's profile, or null if it hasn't been created yet. */
