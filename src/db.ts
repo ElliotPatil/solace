@@ -142,7 +142,7 @@ export async function deleteMusicPlaylist(id:string):Promise<void>{await deleteR
 export async function getCurrentActivities():Promise<CurrentActivity[]>{return getAllRecords<CurrentActivity>(CURRENT_ACTIVITIES)}
 export async function saveCurrentActivity(item:CurrentActivity):Promise<void>{await saveRecord(CURRENT_ACTIVITIES,item)}
 export async function deleteCurrentActivity(id:string):Promise<void>{await deleteRecord(CURRENT_ACTIVITIES,id)}
-export async function getSpotifyConnection():Promise<SpotifyConnection|undefined>{return runRequest<SpotifyConnection|undefined>(SPOTIFY_CONNECTIONS,'readonly',store=>store.getAll()).then(rows=>rows[0])}
+export async function getSpotifyConnection():Promise<SpotifyConnection|undefined>{return getAllRecords<SpotifyConnection>(SPOTIFY_CONNECTIONS).then(rows=>rows[0])}
 export async function saveSpotifyConnection(item:SpotifyConnection):Promise<void>{await saveRecord(SPOTIFY_CONNECTIONS,item)}
 export async function deleteSpotifyConnection(spotifyUserId:string):Promise<void>{await deleteRecord(SPOTIFY_CONNECTIONS,spotifyUserId)}
 export async function getSpotifyImports():Promise<SpotifyImportRecord[]>{return getAllRecords<SpotifyImportRecord>(SPOTIFY_IMPORTS)}
